@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debasish Chemistry Classes | Excellence in Chemistry Education</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            navy: '#0F172A',
+                            slate: '#1E293B',
+                            accent: '#06B6D4',
+                            emerald: '#10B981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #0f766e 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* ---- CBT Exam Portal ---- */
+        .xin{width:100%;font-size:.8rem;padding:.6rem .8rem;border:1px solid #cbd5e1;border-radius:.6rem;background:#fff}
+        .xin:focus{outline:2px solid #14b8a6;border-color:transparent}
+        .xbtn{font-size:.75rem;font-weight:700;padding:.6rem 1rem;border-radius:.6rem;transition:background .15s}
+        .xbtn:disabled{opacity:.4;cursor:not-allowed}
+        .xbtn-p{background:#0F172A;color:#fff}.xbtn-p:hover:not(:disabled){background:#1E293B}
+        .xbtn-g{background:#0d9488;color:#fff}.xbtn-g:hover:not(:disabled){background:#0f766e}
+        .xbtn-l{background:#f1f5f9;color:#334155}.xbtn-l:hover:not(:disabled){background:#e2e8f0}
+        .xbtn-r{background:#e11d48;color:#fff}.xbtn-r:hover{background:#be123c}
+        .xopt{display:flex;gap:.75rem;align-items:flex-start;width:100%;text-align:left;font-size:.9rem;padding:.8rem 1rem;border:2px solid #e2e8f0;border-radius:.75rem;background:#fff;transition:border-color .15s,background .15s}
+        .xopt:hover{border-color:#5eead4}
+        .xopt .xk{flex:none;width:1.75rem;height:1.75rem;border-radius:9999px;border:2px solid #cbd5e1;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+        .xopt.sel{border-color:#0d9488;background:#f0fdfa}
+        .xopt.sel .xk{background:#0d9488;border-color:#0d9488;color:#fff}
+        .xpal{width:2.25rem;height:2.25rem;border-radius:.5rem;font-size:.75rem;font-weight:700;border:1px solid #cbd5e1;background:#fff;color:#475569}
+        .xpal.an{background:#10b981;border-color:#10b981;color:#fff}
+        .xpal.na{background:#fb7185;border-color:#fb7185;color:#fff}
+        .xpal.mk{background:#7c3aed;border-color:#7c3aed;color:#fff}
+        .xpal.cur{box-shadow:0 0 0 2px #fff,0 0 0 4px #0F172A}
+        .xbub{width:2rem;height:2rem;border-radius:9999px;border:2px solid #cbd5e1;font-size:.75rem;font-weight:700;color:#475569;background:#fff}
+        .xbub:hover{border-color:#5eead4}
+        .xbub.sel{background:#0d9488;border-color:#0d9488;color:#fff}
+        .xtab{padding:.5rem 1rem;border-radius:.5rem;font-size:.75rem;font-weight:700;background:#fff;color:#334155;border:1px solid #e2e8f0}
+        .xtab.on{background:#0F172A;color:#fff;border-color:#0F172A}
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-brand-navy text-slate-300 text-xs sm:text-sm py-2 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-accent"></i> Garia & Sonarpur, Kolkata, WB</span>
+                <span class="hidden md:flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5 text-emerald-400"></i> 15+ Years Experienced Faculty</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <a href="tel:+919836530792" class="hover:text-white flex items-center gap-1 transition">
+                    <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i> +91 98365 30792
+                </a>
+                <span class="text-slate-600">|</span>
+                <a href="https://wa.me/919836530792?text=Hello%20Debasish%20Sir,%20I%20want%20to%20enquire%20about%20Chemistry%20batches." target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1 transition shadow-sm">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> WhatsApp Us
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-filter backdrop-blur-md shadow-sm border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex items-center space-x-3 group">
+                    <div class="w-11 h-11 bg-gradient-to-tr from-brand-navy to-brand-700 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+                        <i data-lucide="flask-conical" class="w-6 h-6 text-brand-accent"></i>
+                    </div>
+                    <div>
+                        <span class="block text-sm sm:text-lg font-extrabold text-brand-navy tracking-tight leading-tight">DEBASISH CHEMISTRY CLASSES</span>
+                        <span class="block text-xs font-medium text-brand-700">Excellence in Chemistry Education</span>
+                    </div>
+                </a>
+
+                <!-- Top-right: actions + menu -->
+                <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="openExamPortal()" class="px-3.5 py-2 text-xs font-bold text-white bg-brand-700 hover:bg-brand-600 rounded-lg flex items-center gap-1.5 transition">
+                        <i data-lucide="clipboard-list" class="w-4 h-4"></i> <span class="hidden sm:inline">Exam Portal</span>
+                    </button>
+                    <button onclick="openAdminModal()" class="px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-lg flex items-center gap-1.5 transition border border-slate-200">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-brand-700"></i> <span class="hidden sm:inline">Admin Portal</span>
+                    </button>
+                    <button onclick="openAdmissionModal()" class="hidden sm:block px-4 py-2 bg-brand-navy hover:bg-brand-slate text-white text-xs sm:text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition">
+                        Apply Now
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" aria-label="Menu" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
+                    <i data-lucide="ellipsis-vertical" class="w-6 h-6"></i>
+                </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden absolute right-3 sm:right-6 top-full mt-1 w-64 max-h-[80vh] overflow-y-auto bg-white border border-slate-200 rounded-xl shadow-xl px-4 pt-2 pb-4 space-y-1 z-50">
+            <a href="#home" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">Home</a>
+            <a href="#about" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">About Us</a>
+            <a href="#courses" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">Courses Offered</a>
+            <a href="javascript:void(0)" onclick="openAdmissionModal()" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">Apply for Admission</a>
+            <a href="javascript:void(0)" onclick="openEnquiryModal()" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">Submit Enquiry</a>
+            <a href="#contact" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">Contact & Directions</a>
+            <a href="#results" class="block py-2 text-slate-700 font-medium hover:text-brand-700 border-b border-slate-100">Test Results</a>
+            <a href="javascript:void(0)" onclick="openExamPortal()" class="block py-2 text-brand-700 font-semibold border-b border-slate-100">Exam Portal</a>
+            <a href="javascript:void(0)" onclick="openAdminModal()" class="block py-2 text-brand-navy font-semibold">Admin Access</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <button onclick="openAdmissionModal()" class="w-full py-2.5 bg-brand-navy text-white text-center font-medium rounded-lg shadow">
+                    Apply for Admission
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section id="home" class="relative hero-gradient text-white py-16 lg:py-24 overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#06B6D4_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-brand-accent text-xs font-semibold tracking-wide">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Admissions Open for <span data-adm-session>2026-27</span> Batches
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        Master Chemistry for <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-emerald-400">Class 11, 12, JEE & NEET</span>
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Transform complex physical, organic, and inorganic chemistry concepts into high-scoring conceptual clarity under the expert guidance of <strong>Debasish Mondal</strong>.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
+                        <button onclick="openAdmissionModal()" class="px-6 py-3.5 bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 text-white font-bold rounded-xl shadow-lg hover:shadow-cyan-500/20 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="file-text" class="w-5 h-5"></i> Apply for Admission
+                        </button>
+                        <button onclick="openEnquiryModal()" class="px-6 py-3.5 bg-slate-800/90 hover:bg-slate-700 text-white font-semibold rounded-xl border border-slate-700 transition flex items-center justify-center gap-2">
+                            <i data-lucide="help-circle" class="w-5 h-5 text-brand-accent"></i> Enquire Now
+                        </button>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div class="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+                        <div>
+                            <span class="block text-2xl lg:text-3xl font-bold text-white">15+</span>
+                            <span class="text-xs text-slate-400">Years Experience</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl lg:text-3xl font-bold text-brand-accent">100%</span>
+                            <span class="text-xs text-slate-400">Board Pass Rate</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl lg:text-3xl font-bold text-emerald-400">500+</span>
+                            <span class="text-xs text-slate-400">JEE/NEET Selections</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Graphic / Quick Contact Card -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white/10 backdrop-blur-xl p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl text-slate-800 relative">
+                        <div class="bg-white p-6 rounded-xl shadow-lg space-y-5">
+                            <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
+                                <div class="w-12 h-12 bg-teal-50 text-brand-700 rounded-full flex items-center justify-center font-bold text-xl">
+                                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900">Direct Mentor Connection</h3>
+                                    <p class="text-xs text-slate-500">Contact Debasish Mondal Sir directly</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                    <span class="text-slate-600 font-medium">Class Locations:</span>
+                                    <span class="font-semibold text-slate-900">Garia & Sonarpur</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                    <span class="text-slate-600 font-medium">Batch Modes:</span>
+                                    <span class="font-semibold text-brand-700">Offline & Interactive</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                    <span class="text-slate-600 font-medium">Focus Areas:</span>
+                                    <span class="font-semibold text-slate-900">Board + JEE + NEET</span>
+                                </div>
+                            </div>
+
+                            <a href="tel:+919836530792" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition shadow">
+                                <i data-lucide="phone-call" class="w-4 h-4"></i> Call +91 98365 30792
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / Why Choose Us -->
+    <section class="py-16 bg-white border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs uppercase font-extrabold text-brand-700 tracking-wider">The Academic Advantage</h2>
+                <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Why Students Excel At Debasish Chemistry Classes</p>
+                <p class="text-slate-600 mt-2 text-sm">Structured pedagogy designed to eliminate rote learning and build intuitive problem solving skills.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-6 bg-slate-50 hover:bg-white rounded-xl border border-slate-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-brand-100 text-brand-700 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Deep Concept Clarity</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Step-by-step breakdown of fundamental reaction mechanisms, thermodynamics, and physical chemistry formulas.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-6 bg-slate-50 hover:bg-white rounded-xl border border-slate-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-cyan-100 text-cyan-700 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="clipboard-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Regular Test Series</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Chapter-wise assessments, mock JEE/NEET exams, and Board sample papers with detailed error analysis.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-6 bg-slate-50 hover:bg-white rounded-xl border border-slate-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="messages-square" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Interactive Doubt Solving</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Dedicated doubt clearing sessions ensuring no student leaves class with unanswered questions or confusion.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="p-6 bg-slate-50 hover:bg-white rounded-xl border border-slate-200/80 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Curated Study Material</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Exhaustive notes, past 15-year question banks, mind maps, and formula handbooks tailored for competitive edge.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Public Test Results -->
+    <section id="results" class="py-16 bg-brand-navy text-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-extrabold">Test Results</h2>
+                <p id="results-subtitle" class="text-slate-400 text-sm mt-2">Results appear here as soon as students finish the online test.</p>
+            </div>
+            <div id="public-results-wrap" class="space-y-6"></div>
+        </div>
+    </section>
+
+    <!-- Courses Offered Section -->
+    <section id="courses" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs uppercase font-extrabold text-brand-700 tracking-wider">Academic Programs</h2>
+                <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Our Comprehensive Chemistry Courses</p>
+                <p class="text-slate-600 mt-2 text-sm">Tailored curricula designed for school exams, boards, and national level entrance tests.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Course 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-2.5 py-1 bg-brand-50 text-brand-700 font-semibold text-xs rounded-md">Class 11</span>
+                            <span class="text-xs text-slate-500 font-medium"><i data-lucide="clock" class="inline w-3 h-3"></i> 1 Year</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-slate-900 mb-2">Class 11 Chemistry</h3>
+                        <p class="text-xs text-slate-600 mb-4 line-clamp-3">
+                            Board + Competitive Foundation covering Physical, Organic, and Inorganic fundamentals required for top ranks.
+                        </p>
+                        <ul class="text-xs space-y-2 text-slate-600 mb-6">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Stoichiometry & Thermodynamics</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Atomic Structure & Bonding</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Basic Organic Reaction Mechanics</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openCourseDetails('class11')" class="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1">
+                            Course Details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="openAdmissionModal('Class 11 Chemistry')" class="px-3 py-1.5 bg-brand-navy text-white text-xs font-semibold rounded-md hover:bg-slate-800 transition">
+                            Enroll
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-semibold text-xs rounded-md">Class 12</span>
+                            <span class="text-xs text-slate-500 font-medium"><i data-lucide="clock" class="inline w-3 h-3"></i> 1 Year</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-slate-900 mb-2">Class 12 Chemistry</h3>
+                        <p class="text-xs text-slate-600 mb-4 line-clamp-3">
+                            Board Mastery & Rapid Revision course geared towards 95%+ Board performance and entrance exams.
+                        </p>
+                        <ul class="text-xs space-y-2 text-slate-600 mb-6">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Electrochemistry & Kinetics</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Coordination Compounds</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Advanced Organic Conversions</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openCourseDetails('class12')" class="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1">
+                            Course Details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="openAdmissionModal('Class 12 Chemistry')" class="px-3 py-1.5 bg-brand-navy text-white text-xs font-semibold rounded-md hover:bg-slate-800 transition">
+                            Enroll
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="bg-white rounded-2xl border border-brand-200 shadow-md flex flex-col justify-between overflow-hidden relative">
+                    <div class="absolute top-0 right-0 bg-brand-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-bl-lg uppercase tracking-wider">Popular</div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-2.5 py-1 bg-cyan-50 text-cyan-700 font-semibold text-xs rounded-md">Engineering</span>
+                            <span class="text-xs text-slate-500 font-medium"><i data-lucide="clock" class="inline w-3 h-3"></i> 1-2 Years</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-slate-900 mb-2">JEE Main & Advanced</h3>
+                        <p class="text-xs text-slate-600 mb-4 line-clamp-3">
+                            High-intensity problem solving, shortcuts, multi-concept questions, and speed building tests.
+                        </p>
+                        <ul class="text-xs space-y-2 text-slate-600 mb-6">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Advanced Physical Numerical Practice</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Reaction Mechanisms & Named Reactions</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Mock Papers & PYQ Analysis</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openCourseDetails('jee')" class="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1">
+                            Course Details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="openAdmissionModal('JEE Main & Advanced Chemistry')" class="px-3 py-1.5 bg-brand-navy text-white text-xs font-semibold rounded-md hover:bg-slate-800 transition">
+                            Enroll
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-semibold text-xs rounded-md">Medical</span>
+                            <span class="text-xs text-slate-500 font-medium"><i data-lucide="clock" class="inline w-3 h-3"></i> 1-2 Years</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-slate-900 mb-2">NEET UG Chemistry</h3>
+                        <p class="text-xs text-slate-600 mb-4 line-clamp-3">
+                            NCERT line-by-line coverage, rapid memory techniques, and high-precision question solving.
+                        </p>
+                        <ul class="text-xs space-y-2 text-slate-600 mb-6">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> 100% NCERT Masterclass Focus</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Inorganic Speed & Trick Mnemonics</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Time-bound 180-Minute Mock Tests</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openCourseDetails('neet')" class="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1">
+                            Course Details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="openAdmissionModal('NEET UG Chemistry')" class="px-3 py-1.5 bg-brand-navy text-white text-xs font-semibold rounded-md hover:bg-slate-800 transition">
+                            Enroll
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Teacher Profile Section -->
+    <section id="about" class="py-16 bg-white border-y border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative">
+                        <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl bg-gradient-to-tr from-brand-navy to-brand-700 p-2 shadow-2xl overflow-hidden flex items-center justify-center">
+                            <div class="w-full h-full bg-slate-800 rounded-xl flex flex-col items-center justify-center text-white text-center p-6 space-y-3">
+                                <div class="w-24 h-24 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent mb-2">
+                                    <i data-lucide="user" class="w-12 h-12"></i>
+                                </div>
+                                <h4 class="text-xl font-bold">Dr. Debasish Mondal</h4>
+                                <p class="text-xs text-brand-accent font-medium">Senior Chemistry Educator</p>
+                                <p class="text-[11px] text-slate-300">Ph.D. & M.Sc in Chemistry | 15+ Years Pedagogy</p>
+                                <p class="text-[10px] text-emerald-400 font-semibold">Alumni of Narendrapur Ramakrishna Mission</p>
+                            </div>
+                        </div>
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-4 -right-4 bg-white p-3 sm:p-4 rounded-xl shadow-xl border border-slate-100 flex items-center gap-3">
+                            <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center">
+                                <i data-lucide="award" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-slate-900">Top Educator</span>
+                                <span class="block text-[10px] text-slate-500">Garia & Sonarpur Chemistry Hub</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 space-y-5">
+                    <span class="text-xs uppercase font-extrabold text-brand-700 tracking-wider">Meet The Educator</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+                        Dedicated To Nurturing Scientific Temperament & High Scoring Performance
+                    </h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        With over 15 years of dedicated teaching experience in Kolkata, <strong>Dr. Debasish Mondal</strong> (Alumni of Narendrapur Ramakrishna Mission) has helped thousands of students overcome their fear of Chemistry. His pedagogical style focuses on simplifying abstract molecular theories into clear, relatable concepts.
+                    </p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-4 py-2">
+                        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-700"></i> Individual Attention
+                            </h4>
+                            <p class="text-xs text-slate-500 mt-1">Limited batch sizes to ensure every student's queries are addressed.</p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-700"></i> Proven Results
+                            </h4>
+                            <p class="text-xs text-slate-500 mt-1">Consistent top ranks in WBJEE, JEE Main, NEET, and Class 12 Boards.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex flex-wrap gap-4">
+                        <button onclick="openAdmissionModal()" class="px-5 py-2.5 bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-semibold rounded-lg transition shadow">
+                            Join Next Batch
+                        </button>
+                        <a href="https://wa.me/919836530792?text=Hi%20Debasish%20Sir,%20I%20would%20like%20to%20discuss%20admission." target="_blank" class="px-5 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-semibold rounded-lg transition border border-emerald-200 flex items-center gap-1.5">
+                            <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp Sir
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Testimonials -->
+    <section class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs uppercase font-extrabold text-brand-700 tracking-wider">Success Stories</h2>
+                <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">What Our Students Say</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex text-amber-400 space-x-1">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 text-xs italic leading-relaxed">
+                        "Debasish Sir made Organic Chemistry my strongest subject. His mechanism tricks and regular test series helped me secure 96% in Class 12 Boards and a top percentile in JEE."
+                    </p>
+                    <div class="border-t border-slate-100 pt-3">
+                        <h4 class="font-bold text-slate-900 text-xs">Srinjoy Das</h4>
+                        <span class="text-[10px] text-slate-500">Class 12 Batch (Score: 96 in Chemistry)</span>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex text-amber-400 space-x-1">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 text-xs italic leading-relaxed">
+                        "I was struggling with Physical Chemistry calculations. Debasish Sir's individual guidance and problem solving sheets gave me immense confidence for NEET."
+                    </p>
+                    <div class="border-t border-slate-100 pt-3">
+                        <h4 class="font-bold text-slate-900 text-xs">Ananya Roy</h4>
+                        <span class="text-[10px] text-slate-500">NEET UG Batch (Secured Medical Seat)</span>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex text-amber-400 space-x-1">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 text-xs italic leading-relaxed">
+                        "Best chemistry teacher in Garia. The study material and inorganic revision mnemonics are unparalleled. Highly recommended for every science student!"
+                    </p>
+                    <div class="border-t border-slate-100 pt-3">
+                        <h4 class="font-bold text-slate-900 text-xs">Rahul Mukherjee</h4>
+                        <span class="text-[10px] text-slate-500">Class 11 & 12 Foundation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us & Maps Section -->
+    <section id="contact" class="py-16 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs uppercase font-extrabold text-brand-700 tracking-wider">Reach Out To Us</h2>
+                <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Contact & Coaching Locations</p>
+                <p class="text-slate-600 mt-2 text-sm">Visit our Garia or Sonarpur institute centers, or get in touch for course queries and batch timings.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Contact Info -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                        <h3 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-3">Institute Information</h3>
+                        
+                        <div class="flex items-start space-x-3.5">
+                            <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="map-pin" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Garia Center Address</h4>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                    F97J+37J, Garia Station Rd, Garia Place, Garia, Rajpur Sonarpur, West Bengal 700084
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3.5">
+                            <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="map-pin" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Sonarpur Center Address</h4>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                    CCRG+XMR, Sonarpur Bazaar, Mondal Para, Rajpur Sonarpur, West Bengal 700150
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3.5">
+                            <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="phone" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Phone & WhatsApp</h4>
+                                <p class="text-xs text-slate-600 mt-1">
+                                    <a href="tel:+919836530792" class="hover:text-brand-700 font-semibold">+91 98365 30792</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3.5">
+                            <div class="w-10 h-10 bg-cyan-100 text-cyan-700 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Batch Operational Hours</h4>
+                                <p class="text-xs text-slate-600 mt-1">Mon - Sat: 8:00 AM - 8:00 PM<br>Sunday: Test Series & Doubt Sessions</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 flex gap-3">
+                            <button onclick="openEnquiryModal()" class="w-full py-2.5 bg-brand-navy hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition">
+                                Send Quick Enquiry
+                            </button>
+                            <a href="https://wa.me/919836530792?text=Hello%20Debasish%20Sir" target="_blank" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition text-center flex items-center justify-center gap-1.5">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Maps Embed Split View -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 h-96">
+                    <!-- Garia Center Map -->
+                    <div class="bg-slate-100 rounded-2xl overflow-hidden shadow-md border border-slate-200 h-full flex flex-col">
+                        <div class="bg-slate-800 text-white text-[11px] font-bold px-3 py-1.5 text-center shrink-0">
+                            Garia Center
+                        </div>
+                        <iframe 
+                            title="Debasish Chemistry Classes Garia Location"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3686.8373305419084!2d88.3846!3d22.4729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDI4JDIyLjQiTiA4OMKwMjMnMDQuNiJF!5e0!3m2!1sen!2sin!4v1650000000000!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+
+                    <!-- Sonarpur Center Map -->
+                    <div class="bg-slate-100 rounded-2xl overflow-hidden shadow-md border border-slate-200 h-full flex flex-col">
+                        <div class="bg-slate-800 text-white text-[11px] font-bold px-3 py-1.5 text-center shrink-0">
+                            Sonarpur Center
+                        </div>
+                        <iframe 
+                            title="Debasish Chemistry Classes Sonarpur Location"
+                            src="https://maps.google.com/maps?q=CCRG%2BXMR,%20Sonarpur%20Bazaar,%20Mondal%20Para,%20Rajpur%20Sonarpur,%20West%20Bengal%20700150&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-navy text-slate-400 py-12 text-xs border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3 md:col-span-2">
+                    <div class="flex items-center space-x-2 text-white font-extrabold text-base">
+                        <i data-lucide="flask-conical" class="w-5 h-5 text-brand-accent"></i>
+                        <span>DEBASISH CHEMISTRY CLASSES</span>
+                    </div>
+                    <p class="text-slate-400 text-xs max-w-md leading-relaxed">
+                        Premier Chemistry Coaching in Garia & Sonarpur, Kolkata under Chemistry educator Dr. Debasish Mondal. Specialized preparation for Class 11, 12, JEE Main, JEE Advanced & NEET UG exams.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition">About Educator</a></li>
+                        <li><a href="#courses" class="hover:text-white transition">Courses Offered</a></li>
+                        <li><a href="javascript:void(0)" onclick="openAdmissionModal()" class="hover:text-white transition">Apply Online</a></li>
+                        <li><a href="javascript:void(0)" onclick="openAdminModal()" class="hover:text-white transition">Admin Portal</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Contact & Support</h4>
+                    <p class="mb-2">Garia Station Road & Sonarpur Bazaar, West Bengal</p>
+                    <p class="mb-2">Phone: +91 98365 30792</p>
+                    <p class="text-emerald-400 font-semibold">WhatsApp Available 24/7</p>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-[11px]">
+                <p>&copy; <span id="year"></span> Debasish Chemistry Classes. All rights reserved.</p>
+                <p>Designed for Excellence in Science Education</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ADMISSION MODAL -->
+    <div id="admission-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto custom-scrollbar">
+        <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden my-8 transform transition-all">
+            <div class="bg-brand-navy px-6 py-4 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-base flex items-center gap-2">
+                        <i data-lucide="file-signature" class="w-5 h-5 text-brand-accent"></i> Admission Application
+                    </h3>
+                    <p class="text-xs text-slate-300">Enroll in Debasish Chemistry Classes</p>
+                </div>
+                <button onclick="closeAdmissionModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <form id="admission-form" onsubmit="handleAdmissionSubmit(event)" class="p-6 space-y-4">
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Student's Full Name *</label>
+                        <input type="text" id="adm-student-name" required placeholder="e.g. Sourav Mondal" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Parent's / Guardian's Name *</label>
+                        <input type="text" id="adm-parent-name" required placeholder="e.g. Ramesh Mondal" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Class / Grade *</label>
+                        <select id="adm-class-grade" required class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="">Select Class</option>
+                            <option value="Class 11">Class 11</option>
+                            <option value="Class 12">Class 12</option>
+                            <option value="Repeater / Dropper">Repeater / Dropper</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">School Name *</label>
+                        <input type="text" id="adm-school" required placeholder="e.g. South Point / Narendrapur" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number (WhatsApp) *</label>
+                        <input type="tel" id="adm-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Email Address (Optional)</label>
+                        <input type="email" id="adm-email" placeholder="student@example.com" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Course Selected *</label>
+                        <select id="adm-course" required class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="Class 11 Chemistry">Class 11 Chemistry</option>
+                            <option value="Class 12 Chemistry">Class 12 Chemistry</option>
+                            <option value="JEE Main & Advanced Chemistry">JEE Main & Advanced Chemistry</option>
+                            <option value="NEET UG Chemistry">NEET UG Chemistry</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Preferred Batch Time</label>
+                        <select id="adm-batch" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="Morning (8:00 AM - 10:00 AM)">Morning (8:00 AM - 10:00 AM)</option>
+                            <option value="Evening (4:00 PM - 6:00 PM)">Evening (4:00 PM - 6:00 PM)</option>
+                            <option value="Weekend Special Batch">Weekend Special Batch</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Additional Notes / Remarks</label>
+                    <textarea id="adm-notes" rows="2" placeholder="Mention target rank or specific queries..." class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeAdmissionModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-lg shadow-md transition">
+                        Submit Admission Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ENQUIRY MODAL -->
+    <div id="enquiry-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden my-8">
+            <div class="bg-brand-navy px-6 py-4 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-base flex items-center gap-2">
+                        <i data-lucide="help-circle" class="w-5 h-5 text-brand-accent"></i> Quick Enquiry
+                    </h3>
+                    <p class="text-xs text-slate-300">Have questions? We'll call you back.</p>
+                </div>
+                <button onclick="closeEnquiryModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <form id="enquiry-form" onsubmit="handleEnquirySubmit(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Your Name *</label>
+                    <input type="text" id="enq-name" required placeholder="Enter full name" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number *</label>
+                    <input type="tel" id="enq-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Selected Class / Course *</label>
+                    <select id="enq-course" required class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <option value="Class 11 Chemistry">Class 11 Chemistry</option>
+                        <option value="Class 12 Chemistry">Class 12 Chemistry</option>
+                        <option value="JEE Main & Advanced">JEE Main & Advanced</option>
+                        <option value="NEET UG Chemistry">NEET UG Chemistry</option>
+                        <option value="General Query">General Query</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Your Message / Question *</label>
+                    <textarea id="enq-message" required rows="3" placeholder="Ask about batch timings, fees, or study material..." class="w-full text-xs px-3.5 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeEnquiryModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow transition">
+                        Send Query
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- COURSE DETAILS MODAL -->
+    <div id="course-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 px-6 py-4 text-white flex justify-between items-center">
+                <h3 id="course-modal-title" class="font-bold text-base text-brand-accent">Course Overview</h3>
+                <button onclick="closeCourseModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="course-modal-body" class="p-6 space-y-4 text-xs text-slate-700">
+                <!-- Dynamic Content Loaded Here -->
+            </div>
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="closeCourseModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded-lg text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD MODAL -->
+    <div id="admin-modal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-2xl max-w-5xl w-full shadow-2xl overflow-hidden flex flex-col h-[90vh]">
+            
+            <!-- Admin Login View -->
+            <div id="admin-auth" class="p-8 my-auto max-w-md mx-auto w-full text-center space-y-4">
+                <div class="w-16 h-16 bg-brand-navy text-brand-accent rounded-full flex items-center justify-center mx-auto shadow-lg">
+                    <i data-lucide="lock" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Dr. Debasish Mondal Admin Portal</h3>
+                <p class="text-xs text-slate-500">Enter access PIN to manage admission requests and enquiries.</p>
+                
+                <input type="password" id="admin-pin" placeholder="Enter PIN" class="w-full text-center tracking-widest text-lg font-bold py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                
+                <div class="flex gap-3">
+                    <button onclick="closeAdminModal()" class="w-full py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg">Cancel</button>
+                    <button onclick="authenticateAdmin()" class="w-full py-2.5 bg-brand-navy hover:bg-slate-800 text-white font-bold text-xs rounded-lg shadow">Login</button>
+                </div>
+            </div>
+
+            <!-- Admin Content View -->
+            <div id="admin-dashboard" class="hidden flex-col h-full">
+                <!-- Header -->
+                <div class="bg-brand-navy px-6 py-4 text-white flex justify-between items-center shrink-0">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-brand-accent/20 rounded-lg flex items-center justify-center text-brand-accent">
+                            <i data-lucide="database" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base">Debasish Chemistry Portal Dashboard</h3>
+                            <p class="text-[11px] text-slate-300">Simulated SQL Database Store (`admissions` & `enquiries` tables)</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <!-- Admin Tabs & Actions -->
+                <div class="p-4 bg-slate-100 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3 shrink-0">
+                    <div class="flex space-x-2">
+                        <button id="tab-btn-admissions" onclick="switchAdminTab('admissions')" class="px-4 py-2 rounded-lg text-xs font-bold bg-brand-navy text-white shadow-sm">
+                            Admissions <span id="badge-admissions-count" class="ml-1 px-1.5 py-0.5 bg-brand-accent text-slate-900 rounded-full text-[10px]">0</span>
+                        </button>
+                        <button id="tab-btn-enquiries" onclick="switchAdminTab('enquiries')" class="px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200">
+                            Enquiries <span id="badge-enquiries-count" class="ml-1 px-1.5 py-0.5 bg-slate-200 text-slate-800 rounded-full text-[10px]">0</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="admin-search" oninput="renderAdminTables()" placeholder="Search records..." class="text-xs px-3 py-1.5 border border-slate-300 rounded-lg focus:outline-none">
+                        <button onclick="refreshAdminData()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg flex items-center gap-1">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh
+                        </button>
+                        <button onclick="openExamReset()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Exam
+                        </button>
+                        <button onclick="exportTableToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table Content Container -->
+                <div class="p-4 flex-1 overflow-y-auto custom-scrollbar">
+                    
+                    <!-- ADMISSIONS TABLE -->
+                    <div id="admin-admissions-view" class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-slate-200 text-slate-700 font-bold sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">ID</th>
+                                    <th class="p-2.5">Student Name</th>
+                                    <th class="p-2.5">Parent Name</th>
+                                    <th class="p-2.5">Class / School</th>
+                                    <th class="p-2.5">Phone / Email</th>
+                                    <th class="p-2.5">Course</th>
+                                    <th class="p-2.5">Batch</th>
+                                    <th class="p-2.5">Exam Login (ID / Password / Paper)</th>
+                                    <th class="p-2.5">Status</th>
+                                    <th class="p-2.5">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admissions-tbody" class="divide-y divide-slate-200">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ENQUIRIES TABLE -->
+                    <div id="admin-enquiries-view" class="hidden overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-slate-200 text-slate-700 font-bold sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">ID</th>
+                                    <th class="p-2.5">Name</th>
+                                    <th class="p-2.5">Phone</th>
+                                    <th class="p-2.5">Course</th>
+                                    <th class="p-2.5">Message Query</th>
+                                    <th class="p-2.5">Date</th>
+                                    <th class="p-2.5">Status</th>
+                                    <th class="p-2.5">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enquiries-tbody" class="divide-y divide-slate-200">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Footer Summary -->
+                <div class="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex justify-between items-center shrink-0">
+                    <span>Database Status: Active (Local Store Synchronized)</span>
+                    <button onclick="clearAllDemoData()" class="text-rose-600 hover:underline">Reset Demo Database</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= CBT EXAM PORTAL ================= -->
+    <div id="exam-modal" class="fixed inset-0 z-50 hidden bg-slate-100 overflow-y-auto">
+
+        <!-- Choose login -->
+        <div id="ex-v-choose" class="exam-view"><div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden">
+                <div class="bg-brand-navy text-white px-6 py-4 flex justify-between items-center">
+                    <div><h3 class="font-bold text-base">Online CBT Exam Portal</h3><p class="text-[11px] text-slate-300">Debasish Chemistry Classes</p></div>
+                    <button onclick="closeExamPortal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <div class="p-6 grid sm:grid-cols-2 gap-4">
+                    <button onclick="showExamView('slogin')" class="text-left p-5 rounded-xl border border-slate-200 hover:border-brand-500 hover:shadow-md transition">
+                        <i data-lucide="graduation-cap" class="w-7 h-7 text-brand-700 mb-3"></i>
+                        <span class="block font-bold text-slate-900">Student Login</span>
+                        <span class="block text-xs text-slate-500 mt-1">Use the Student ID and password given by your teacher.</span>
+                    </button>
+                    <button onclick="showExamView('alogin')" class="text-left p-5 rounded-xl border border-slate-200 hover:border-brand-500 hover:shadow-md transition">
+                        <i data-lucide="shield-check" class="w-7 h-7 text-brand-700 mb-3"></i>
+                        <span class="block font-bold text-slate-900">Admin Login</span>
+                        <span class="block text-xs text-slate-500 mt-1">Upload the paper, answer key and exam time.</span>
+                    </button>
+                </div>
+            </div>
+        </div></div>
+
+        <!-- Student login -->
+        <div id="ex-v-slogin" class="exam-view hidden"><div class="min-h-screen flex items-center justify-center p-4">
+            <form onsubmit="studentLogin(event)" class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+                <h3 class="text-lg font-bold text-slate-900">Student Login</h3>
+                <div><label class="block text-xs font-semibold text-slate-600 mb-1">Student ID</label><input id="xs-id" class="xin" autocomplete="off" required></div>
+                <div><label class="block text-xs font-semibold text-slate-600 mb-1">Password</label><input id="xs-pw" type="password" class="xin" autocomplete="off" required></div>
+                <div class="flex gap-3"><button type="button" onclick="showExamView('choose')" class="xbtn xbtn-l w-full">Back</button><button class="xbtn xbtn-g w-full">Login</button></div>
+            </form>
+        </div></div>
+
+        <!-- Admin login (password only) -->
+        <div id="ex-v-alogin" class="exam-view hidden"><div class="min-h-screen flex items-center justify-center p-4">
+            <form onsubmit="examAdminLogin(event)" class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+                <h3 class="text-lg font-bold text-slate-900">Admin Login</h3>
+                <div><label class="block text-xs font-semibold text-slate-600 mb-1">Password</label><input id="xa-pw" type="password" class="xin" required></div>
+                <div class="flex gap-3"><button type="button" onclick="showExamView('choose')" class="xbtn xbtn-l w-full">Back</button><button class="xbtn xbtn-g w-full">Login</button></div>
+            </form>
+        </div></div>
+
+        <!-- Admin dashboard -->
+        <div id="ex-v-admin" class="exam-view hidden"><div class="max-w-5xl mx-auto p-3 sm:p-6">
+            <div class="bg-brand-navy text-white rounded-t-2xl px-5 py-4 flex justify-between items-center">
+                <div><h3 class="font-bold text-base">Exam Admin</h3><p class="text-[11px] text-slate-300">Paper, answer key, timing and results</p></div>
+                <button onclick="examAdminLogout()" class="xbtn bg-slate-700 hover:bg-slate-600 text-white">Logout</button>
+            </div>
+            <div class="bg-slate-50 border-x border-slate-200 px-3 pt-3 flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-semibold text-slate-600">Question paper:</span>
+                <button id="xg-JEE" onclick="xaPaper('JEE')" class="xtab on">JEE</button>
+                <button id="xg-NEET" onclick="xaPaper('NEET')" class="xtab">NEET</button>
+                <span class="text-[11px] text-slate-500">Each paper has its own questions, key, timing and results.</span>
+            </div>
+            <div class="bg-slate-50 border-x border-slate-200 p-3 flex gap-2 flex-wrap">
+                <button id="xt-setup" onclick="xaTab('setup')" class="xtab on">Settings</button>
+                <button id="xt-questions" onclick="xaTab('questions')" class="xtab">Question Paper &amp; Answer Key</button>
+                <button id="xt-results" onclick="xaTab('results')" class="xtab">Results</button>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-b-2xl p-4 sm:p-6">
+
+                <div id="xp-setup" class="space-y-4 max-w-xl">
+                    <h4 id="x-paperhdr" class="font-bold text-sm text-brand-700"></h4>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Exam title</label><input id="x-title" class="xin"></div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div><label class="block text-xs font-semibold text-slate-600 mb-1">Time (minutes)</label><input id="x-duration" type="number" min="1" class="xin"></div>
+                        <div><label class="block text-xs font-semibold text-slate-600 mb-1">Marks for each question</label><input id="x-correct" type="number" min="0.25" step="0.25" oninput="xaTotals()" class="xin"></div>
+                        <div><label class="block text-xs font-semibold text-slate-600 mb-1">Negative marks per wrong answer</label><input id="x-negative" type="number" min="0" step="0.25" oninput="xaTotals()" class="xin"></div>
+                    </div>
+                    <div id="x-totals" class="text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1"></div>
+                    <label class="flex items-center gap-2 text-xs text-slate-700"><input id="x-active" type="checkbox"> Exam is open for students to start</label>
+                    <label class="flex items-center gap-2 text-xs text-slate-700"><input id="x-showres" type="checkbox"> Show results on the home page</label>
+                    <div class="flex flex-wrap gap-3"><button onclick="xaSaveSettings()" class="xbtn xbtn-g">Save Settings</button><button onclick="xaNewExam()" class="xbtn xbtn-r">Clear this paper &amp; results</button></div>
+                    <p class="text-[11px] text-slate-500 leading-relaxed">Student IDs, passwords and the JEE / NEET paper for each student are set in <strong>Admin Portal &rarr; Admissions &rarr; Exam Login</strong> column. Each student gets one attempt; use Reset in the Results tab to allow a retake.</p>
+                </div>
+
+                <div id="xp-questions" class="hidden space-y-5">
+                    <div id="x-warn" class="hidden text-[11px] bg-amber-50 border border-amber-200 text-amber-800 rounded-lg p-3">Students have already started or finished this exam. Changing the paper or key will not re-score existing results.</div>
+                    <div class="border border-slate-200 rounded-xl p-4 space-y-2">
+                        <h4 class="font-bold text-sm text-slate-900">1. Question paper (PDF)</h4>
+                        <input type="file" accept="application/pdf,.pdf" onchange="xaUploadQ(this)" class="text-xs">
+                        <p id="x-qinfo" class="text-[11px] text-slate-500"></p>
+                    </div>
+                    <div class="border border-slate-200 rounded-xl p-4 space-y-2">
+                        <h4 class="font-bold text-sm text-slate-900">2. Answer key (PDF)</h4>
+                        <p class="text-[11px] text-slate-500">Answers should be written like <code>1. A &nbsp; 2. C &nbsp; 3. B</code> (a table works too). Students never see this file; only the answers read from it are kept.</p>
+                        <input type="file" accept="application/pdf,.pdf" onchange="xaUploadKey(this)" class="text-xs">
+                        <p id="x-kinfo" class="text-[11px] text-slate-500"></p>
+                    </div>
+                    <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+                        <h4 class="font-bold text-sm text-slate-900">3. Check the answer key</h4>
+                        <p class="text-[11px] text-slate-500">Compare these with your answer key PDF and correct any mistakes. If the PDF could not be read (for example a scanned image), enter the number of questions and pick each answer.</p>
+                        <div class="flex items-center gap-2"><label class="text-xs font-semibold text-slate-600">Total questions</label><input id="x-nq" type="number" min="1" max="300" class="xin !w-24"><button onclick="xaApplyN()" class="xbtn xbtn-l">Apply</button></div>
+                        <div id="x-keygrid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2"></div>
+                        <p id="x-keystat" class="text-xs"></p>
+                    </div>
+                </div>
+
+                <div id="xp-results" class="hidden">
+                    <div class="flex justify-between items-center mb-3"><h4 class="font-bold text-sm text-slate-900">Submissions for current exam</h4><button onclick="xaExport()" class="xbtn xbtn-g">Export CSV</button></div>
+                    <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+                        <thead class="bg-slate-200 font-bold"><tr><th class="p-2">Student ID</th><th class="p-2">Name</th><th class="p-2">Score</th><th class="p-2">Right / Wrong / Blank</th><th class="p-2">Gained / Negative</th><th class="p-2">%</th><th class="p-2">Time</th><th class="p-2">Submitted</th><th class="p-2">Action</th></tr></thead>
+                        <tbody id="x-rlist" class="divide-y divide-slate-200"></tbody>
+                    </table></div>
+                </div>
+            </div>
+        </div></div>
+
+        <!-- Instructions -->
+        <div id="ex-v-instr" class="exam-view hidden"><div class="max-w-2xl mx-auto p-4 sm:p-8">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-brand-navy text-white px-6 py-4"><h3 id="i-title" class="font-bold text-lg"></h3><p id="i-student" class="text-xs text-slate-300"></p></div>
+                <div class="p-6 space-y-4 text-sm text-slate-700">
+                    <h4 class="font-bold text-slate-900">Instructions</h4>
+                    <div id="i-scheme" class="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs"></div>
+                    <ul id="i-list" class="list-disc pl-5 space-y-1.5 text-[13px]"></ul>
+                    <label class="flex items-start gap-2 text-xs pt-2"><input id="i-agree" type="checkbox" class="mt-0.5" onchange="document.getElementById('i-start').disabled=!this.checked"> I have read and understood the instructions.</label>
+                    <div class="flex gap-3"><button onclick="xsLeave()" class="xbtn xbtn-l w-full">Cancel</button><button id="i-start" disabled onclick="xsStart()" class="xbtn xbtn-g w-full">Start Test</button></div>
+                </div>
+            </div>
+        </div></div>
+
+        <!-- Test -->
+        <div id="ex-v-test" class="exam-view hidden"><div class="h-screen flex flex-col">
+            <header class="bg-brand-navy text-white px-4 py-3 flex items-center justify-between gap-3 shrink-0">
+                <div class="min-w-0"><h3 id="t-title" class="font-bold text-sm truncate"></h3><p id="t-student" class="text-[11px] text-slate-300 truncate"></p></div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <div id="t-timer" class="px-3 py-1.5 rounded-lg bg-slate-800 font-mono font-bold">00:00</div>
+                    <button onclick="xsSubmit(false)" class="xbtn xbtn-g">Submit Test</button>
+                </div>
+            </header>
+            <div class="flex-1 min-h-0 flex flex-col lg:flex-row">
+                <main id="t-pdf" class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 bg-slate-200"></main>
+                <aside class="lg:w-80 h-[42vh] lg:h-auto bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col shrink-0">
+                    <div class="p-3 border-b border-slate-200">
+                        <h4 class="font-bold text-xs text-slate-900">Answer Sheet</h4>
+                        <p id="t-count" class="text-[11px] font-semibold text-brand-700"></p>
+                        <p class="text-[11px] text-slate-500">Tap an option to answer. Tap it again to clear.</p>
+                    </div>
+                    <div id="t-sheet" class="flex-1 overflow-y-auto p-3"></div>
+                </aside>
+            </div>
+        </div></div>
+
+        <!-- Message / submitted -->
+        <div id="ex-v-done" class="exam-view hidden"><div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center space-y-3">
+                <h3 id="d-title" class="text-xl font-bold text-slate-900"></h3>
+                <p id="d-body" class="text-sm text-slate-600"></p>
+                <div id="d-stats" class="hidden grid grid-cols-3 gap-2 text-xs pt-2"></div>
+                <button onclick="closeExamPortal(true)" class="xbtn xbtn-p w-full mt-3">Back to Home</button>
+            </div>
+        </div></div>
+    </div>
+
+    <!-- Reset exam dialog (opened from Admin Portal) -->
+    <div id="xr-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4">
+            <h3 class="text-lg font-bold text-slate-900">Reset Exam</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">This deletes the selected paper's uploaded question PDF, answer key, in-progress attempts and all results (including the home page results). Student IDs, passwords and JEE / NEET allocations are kept. This cannot be undone.</p>
+            <div class="space-y-2 text-sm text-slate-700">
+                <label class="flex items-center gap-2"><input type="radio" name="xr-which" value="JEE"> JEE paper <span id="xr-cnt-JEE" class="text-xs text-slate-400"></span></label>
+                <label class="flex items-center gap-2"><input type="radio" name="xr-which" value="NEET"> NEET paper <span id="xr-cnt-NEET" class="text-xs text-slate-400"></span></label>
+                <label class="flex items-center gap-2"><input type="radio" name="xr-which" value="BOTH" checked> Both papers</label>
+            </div>
+            <div class="flex gap-3"><button onclick="X('xr-modal').classList.add('hidden')" class="xbtn xbtn-l w-full">Cancel</button><button onclick="confirmExamReset()" class="xbtn xbtn-r w-full">Delete &amp; Reset</button></div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 transform transition-all duration-300">
+        <div id="toast-icon" class="text-emerald-400">
+            <i data-lucide="check-circle" class="w-5 h-5"></i>
+        </div>
+        <div>
+            <h4 id="toast-title" class="font-bold text-xs">Success!</h4>
+            <p id="toast-msg" class="text-[11px] text-slate-300">Your request has been saved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Local Persistent Database Mocking SQL Tables: `admissions` and `enquiries`
+        let db = {
+            admissions: JSON.parse(localStorage.getItem('dcc_admissions')) || [
+                {
+                    id: 1,
+                    student_name: 'Aritra Sengupta',
+                    parent_name: 'Subhash Sengupta',
+                    class_grade: 'Class 12',
+                    school_name: 'Narendrapur Ramakrishna Mission',
+                    phone: '9830012345',
+                    email: 'aritra@example.com',
+                    course_selected: 'JEE Main & Advanced Chemistry',
+                    preferred_batch: 'Evening (4:00 PM - 6:00 PM)',
+                    notes: 'Targeting Top Rank in WBJEE & JEE Advanced.',
+                    status: 'Enrolled',
+                    created_at: '2026-03-01 10:30'
+                },
+                {
+                    id: 2,
+                    student_name: 'Priyanka Ghosh',
+                    parent_name: 'Tapan Ghosh',
+                    class_grade: 'Class 11',
+                    school_name: 'South Point High School',
+                    phone: '9831198765',
+                    email: '',
+                    course_selected: 'Class 11 Chemistry',
+                    preferred_batch: 'Morning (8:00 AM - 10:00 AM)',
+                    notes: 'Focus on board foundations and numericals.',
+                    status: 'New',
+                    created_at: '2026-03-02 14:15'
+                }
+            ],
+            enquiries: JSON.parse(localStorage.getItem('dcc_enquiries')) || [
+                {
+                    id: 1,
+                    name: 'Sneha Mitra',
+                    phone: '9836500000',
+                    course_selected: 'NEET UG Chemistry',
+                    message: 'Is there a weekend Sunday batch available for medical chemistry revision?',
+                    status: 'Contacted',
+                    created_at: '2026-03-01 11:45'
+                }
+            ]
+        };
+
+        let currentAdminTab = 'admissions';
+
+        // Initialize UI Elements
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Mobile menu toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        });
+
+        function saveDb() {
+            localStorage.setItem('dcc_admissions', JSON.stringify(db.admissions));
+            localStorage.setItem('dcc_enquiries', JSON.stringify(db.enquiries));
+            pushSoon('admissions', db.admissions); pushSoon('enquiries', db.enquiries);  // shared server copy (admin only)
+            renderAdminTables();
+        }
+
+        // Modal Controls
+        function openAdmissionModal(courseName = '') {
+            if (courseName) {
+                document.getElementById('adm-course').value = courseName;
+            }
+            document.getElementById('admission-modal').classList.remove('hidden');
+        }
+
+        function closeAdmissionModal() {
+            document.getElementById('admission-modal').classList.add('hidden');
+        }
+
+        function openEnquiryModal() {
+            document.getElementById('enquiry-modal').classList.remove('hidden');
+        }
+
+        function closeEnquiryModal() {
+            document.getElementById('enquiry-modal').classList.add('hidden');
+        }
+
+        // Handle Admission Form Submission
+        function handleAdmissionSubmit(e) {
+            e.preventDefault();
+            const newAdmission = {
+                id: db.admissions.length ? Math.max(...db.admissions.map(a => a.id)) + 1 : 1,
+                student_name: document.getElementById('adm-student-name').value,
+                parent_name: document.getElementById('adm-parent-name').value,
+                class_grade: document.getElementById('adm-class-grade').value,
+                school_name: document.getElementById('adm-school').value,
+                phone: document.getElementById('adm-phone').value,
+                email: document.getElementById('adm-email').value,
+                course_selected: document.getElementById('adm-course').value,
+                preferred_batch: document.getElementById('adm-batch').value,
+                notes: document.getElementById('adm-notes').value,
+                status: 'New',
+                created_at: new Date().toLocaleString()
+            };
+
+            db.admissions.unshift(newAdmission);
+            saveDb(); sendForm('admissions', newAdmission);
+
+            closeAdmissionModal();
+            document.getElementById('admission-form').reset();
+            showToast('Admission Request Received!', 'Dr. Debasish Mondal will contact you shortly.');
+        }
+
+        // Handle Enquiry Form Submission
+        function handleEnquirySubmit(e) {
+            e.preventDefault();
+            const newEnquiry = {
+                id: db.enquiries.length ? Math.max(...db.enquiries.map(q => q.id)) + 1 : 1,
+                name: document.getElementById('enq-name').value,
+                phone: document.getElementById('enq-phone').value,
+                course_selected: document.getElementById('enq-course').value,
+                message: document.getElementById('enq-message').value,
+                status: 'New',
+                created_at: new Date().toLocaleString()
+            };
+
+            db.enquiries.unshift(newEnquiry);
+            saveDb(); sendForm('enquiries', newEnquiry);
+
+            closeEnquiryModal();
+            document.getElementById('enquiry-form').reset();
+            showToast('Enquiry Sent Successfully!', 'Thank you for reaching out.');
+        }
+
+        // Course Details Modal Trigger
+        function openCourseDetails(type) {
+            const modal = document.getElementById('course-modal');
+            const title = document.getElementById('course-modal-title');
+            const body = document.getElementById('course-modal-body');
+
+            const courseInfo = {
+                class11: {
+                    title: "Class 11 Chemistry (Board + Foundation)",
+                    content: `
+                        <p><strong>Target Audience:</strong> Students entering Class 11 Science.</p>
+                        <p><strong>Coverage:</strong> Physical Chemistry (Mole Concept, Thermodynamics, Equilibrium), Inorganic Chemistry (Periodic Table, Chemical Bonding), Organic Chemistry (GOC & Hydrocarbons).</p>
+                        <p><strong>Batch Timings:</strong> Morning (8:00 AM) & Evening (4:00 PM) slots.</p>
+                        <p><strong>Features:</strong> Comprehensive textbook coverage, chapter mock tests, formula handbooks.</p>
+                    `
+                },
+                class12: {
+                    title: "Class 12 Chemistry (Board Mastery)",
+                    content: `
+                        <p><strong>Target Audience:</strong> Students in Class 12 preparing for Board exams.</p>
+                        <p><strong>Coverage:</strong> Solutions, Electrochemistry, Kinetics, d & f Block, Coordination Chemistry, Haloalkanes, Alcohols, Aldehydes, Amines.</p>
+                        <p><strong>Batch Timings:</strong> Weekdays & Weekend revision modules.</p>
+                        <p><strong>Features:</strong> Board sample paper solving, past 10-year question practice, direct Sir guidance.</p>
+                    `
+                },
+                jee: {
+                    title: "JEE Main & Advanced Chemistry",
+                    content: `
+                        <p><strong>Target Audience:</strong> Class 11 & 12 Aspirants targeting IITs, NITs, and WBJEE.</p>
+                        <p><strong>Coverage:</strong> Advanced problem solving across physical, organic reaction mechanisms, and inorganic qualitative analysis.</p>
+                        <p><strong>Batch Timings:</strong> Intensive weekend & late evening batches.</p>
+                        <p><strong>Features:</strong> Short-cut tricks, speed building exercises, multi-correct option strategy.</p>
+                    `
+                },
+                neet: {
+                    title: "NEET UG Chemistry Program",
+                    content: `
+                        <p><strong>Target Audience:</strong> Medical aspirants seeking high accuracy in Chemistry.</p>
+                        <p><strong>Coverage:</strong> 100% NCERT line-by-line concept mastery + high probability MCQ practice.</p>
+                        <p><strong>Batch Timings:</strong> Flexible morning and evening batches.</p>
+                        <p><strong>Features:</strong> Inorganic mnemonics, time-bound mock tests, individual error log reviews.</p>
+                    `
+                }
+            };
+
+            if (courseInfo[type]) {
+                title.textContent = courseInfo[type].title;
+                body.innerHTML = courseInfo[type].content;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeCourseModal() {
+            document.getElementById('course-modal').classList.add('hidden');
+        }
+
+        // Admin Modal Controls
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        async function authenticateAdmin() {
+            try {
+                const r = await api('adminLogin', { password: document.getElementById('admin-pin').value });
+                adminToken = r.token; sessionStorage.setItem('dcc_admin_token', adminToken); await pullAdmin();
+            } catch (e) { return showToast('Access Denied', e.message, true); }
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('flex');
+            renderAdminTables();
+        }
+
+        function switchAdminTab(tab) {
+            currentAdminTab = tab;
+            const admBtn = document.getElementById('tab-btn-admissions');
+            const enqBtn = document.getElementById('tab-btn-enquiries');
+            const admView = document.getElementById('admin-admissions-view');
+            const enqView = document.getElementById('admin-enquiries-view');
+
+            if (tab === 'admissions') {
+                admBtn.className = "px-4 py-2 rounded-lg text-xs font-bold bg-brand-navy text-white shadow-sm";
+                enqBtn.className = "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200";
+                admView.classList.remove('hidden');
+                enqView.classList.add('hidden');
+            } else {
+                enqBtn.className = "px-4 py-2 rounded-lg text-xs font-bold bg-brand-navy text-white shadow-sm";
+                admBtn.className = "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200";
+                enqView.classList.remove('hidden');
+                admView.classList.add('hidden');
+            }
+            renderAdminTables();
+        }
+
+        function renderAdminTables() {
+            const query = (document.getElementById('admin-search')?.value || '').toLowerCase();
+
+            // Update Badges
+            document.getElementById('badge-admissions-count').textContent = db.admissions.length;
+            document.getElementById('badge-enquiries-count').textContent = db.enquiries.length;
+
+            // Render Admissions
+            const admTbody = document.getElementById('admissions-tbody');
+            admTbody.innerHTML = '';
+            const filteredAdmissions = db.admissions.filter(a => 
+                a.student_name.toLowerCase().includes(query) || 
+                a.phone.includes(query) || 
+                a.course_selected.toLowerCase().includes(query)
+            );
+
+            if (filteredAdmissions.length === 0) {
+                admTbody.innerHTML = `<tr><td colspan="10" class="p-4 text-center text-slate-400">No admission records found</td></tr>`;
+            } else {
+                filteredAdmissions.forEach(adm => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50";
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-bold">#${adm.id}</td>
+                        <td class="p-2.5 font-semibold text-slate-900">${adm.student_name}</td>
+                        <td class="p-2.5">${adm.parent_name}</td>
+                        <td class="p-2.5">${adm.class_grade}<br><span class="text-[10px] text-slate-500">${adm.school_name}</span></td>
+                        <td class="p-2.5">${adm.phone}<br><span class="text-[10px] text-slate-500">${adm.email || '-'}</span></td>
+                        <td class="p-2.5 font-medium">${adm.course_selected}</td>
+                        <td class="p-2.5 text-[10px]">${adm.preferred_batch}</td>
+                        <td class="p-2.5 min-w-[160px]">
+                            <input id="exid-${adm.id}" value="${xe(adm.exam_id || '')}" placeholder="Student ID" class="w-full text-[11px] px-2 py-1 border border-slate-300 rounded mb-1">
+                            <input id="expw-${adm.id}" value="${xe(adm.exam_pass || '')}" placeholder="Password" class="w-full text-[11px] px-2 py-1 border border-slate-300 rounded mb-1">
+                            <select onchange="saveTag(${adm.id}, this.value)" class="w-full text-[11px] px-2 py-1 border border-slate-300 rounded mb-1 bg-white">
+                                <option value="">Paper: none</option>
+                                <option value="JEE" ${adm.exam_tag === 'JEE' ? 'selected' : ''}>JEE paper</option>
+                                <option value="NEET" ${adm.exam_tag === 'NEET' ? 'selected' : ''}>NEET paper</option>
+                            </select>
+                            <div class="flex gap-1">
+                                <button onclick="autoCred(${adm.id})" class="px-2 py-1 text-[10px] font-bold bg-slate-200 hover:bg-slate-300 rounded">Auto</button>
+                                <button onclick="saveCred(${adm.id})" class="px-2 py-1 text-[10px] font-bold bg-brand-700 hover:bg-brand-600 text-white rounded">Save</button>
+                            </div>
+                        </td>
+                        <td class="p-2.5">
+                            <select onchange="updateStatus('admissions', ${adm.id}, this.value)" class="text-[11px] px-2 py-1 rounded border border-slate-300">
+                                <option value="New" ${adm.status === 'New' ? 'selected' : ''}>New</option>
+                                <option value="Contacted" ${adm.status === 'Contacted' ? 'selected' : ''}>Contacted</option>
+                                <option value="Enrolled" ${adm.status === 'Enrolled' ? 'selected' : ''}>Enrolled</option>
+                            </select>
+                        </td>
+                        <td class="p-2.5">
+                            <button onclick="deleteRecord('admissions', ${adm.id})" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
+                        </td>
+                    `;
+                    admTbody.appendChild(tr);
+                });
+            }
+
+            // Render Enquiries
+            const enqTbody = document.getElementById('enquiries-tbody');
+            enqTbody.innerHTML = '';
+            const filteredEnquiries = db.enquiries.filter(q => 
+                q.name.toLowerCase().includes(query) || 
+                q.phone.includes(query) || 
+                q.message.toLowerCase().includes(query)
+            );
+
+            if (filteredEnquiries.length === 0) {
+                enqTbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No enquiries found</td></tr>`;
+            } else {
+                filteredEnquiries.forEach(enq => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50";
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-bold">#${enq.id}</td>
+                        <td class="p-2.5 font-semibold text-slate-900">${enq.name}</td>
+                        <td class="p-2.5">${enq.phone}</td>
+                        <td class="p-2.5">${enq.course_selected}</td>
+                        <td class="p-2.5 max-w-xs truncate" title="${enq.message}">${enq.message}</td>
+                        <td class="p-2.5 text-[10px] text-slate-500">${enq.created_at}</td>
+                        <td class="p-2.5">
+                            <select onchange="updateStatus('enquiries', ${enq.id}, this.value)" class="text-[11px] px-2 py-1 rounded border border-slate-300">
+                                <option value="New" ${enq.status === 'New' ? 'selected' : ''}>New</option>
+                                <option value="Contacted" ${enq.status === 'Contacted' ? 'selected' : ''}>Contacted</option>
+                                <option value="Closed" ${enq.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                            </select>
+                        </td>
+                        <td class="p-2.5">
+                            <button onclick="deleteRecord('enquiries', ${enq.id})" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
+                        </td>
+                    `;
+                    enqTbody.appendChild(tr);
+                });
+            }
+        }
+
+        function updateStatus(table, id, newStatus) {
+            const item = db[table].find(x => x.id === id);
+            if (item) {
+                item.status = newStatus;
+                saveDb();
+                showToast('Status Updated', `Record #${id} marked as ${newStatus}`);
+            }
+        }
+
+        function deleteRecord(table, id) {
+            db[table] = db[table].filter(x => x.id !== id);
+            saveDb();
+            showToast('Record Deleted', `Entry removed from ${table}.`);
+        }
+
+        function clearAllDemoData() {
+            db.admissions = [];
+            db.enquiries = [];
+            saveDb();
+            showToast('Database Reset', 'All records cleared.');
+        }
+
+        // CSV Export Utility
+        function exportTableToCSV() {
+            const data = db[currentAdminTab];
+            if (!data || !data.length) {
+                showToast('Export Error', 'No data available to export.', true);
+                return;
+            }
+
+            const headers = Object.keys(data[0]).join(',');
+            const rows = data.map(obj => 
+                Object.values(obj).map(val => `"${String(val).replace(/"/g, '""')}"`).join(',')
+            );
+
+            const csvContent = "data:text/csv;charset=utf-8," + [headers, ...rows].join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Debasish_Chemistry_${currentAdminTab}_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Notification Toast
+        function showToast(title, message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toast-title');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastTitle.textContent = title;
+            toastMsg.textContent = message;
+
+            if (isError) {
+                toastIcon.className = "text-rose-400";
+                toastIcon.innerHTML = `<i data-lucide="alert-circle" class="w-5 h-5"></i>`;
+            } else {
+                toastIcon.className = "text-emerald-400";
+                toastIcon.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5"></i>`;
+            }
+            lucide.createIcons();
+
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+    // ================= CBT EXAM PORTAL =================
+    // ---------- Shared server (Netlify Function) ----------
+    const API = '/.netlify/functions/api';
+    let adminToken = sessionStorage.getItem('dcc_admin_token') || '', studentToken = '', pubData = {}, pushTimer = null;
+    const pendingSets = {};
+    async function api(action, body = {}) {
+        let r, j = {};
+        try { r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, ...body }) }); }
+        catch (e) { throw new Error('Cannot reach the server. Check your internet connection.'); }
+        try { j = await r.json(); } catch (e) { throw new Error('The server is not set up yet (the Netlify function is not deployed).'); }
+        if (!r.ok) { if (r.status === 401 && body.token && body.token === adminToken) { adminToken = ''; sessionStorage.removeItem('dcc_admin_token'); } throw new Error(j.error || 'Server error.'); }
+        return j;
+    }
+    // admin edits are saved to the server a moment after they are made
+    function pushSoon(name, value) {
+        if (!adminToken) return; pendingSets[name] = value; clearTimeout(pushTimer);
+        pushTimer = setTimeout(async () => {
+            const sets = { ...pendingSets }; Object.keys(pendingSets).forEach(k => delete pendingSets[k]);
+            try { await api('adminSet', { token: adminToken, sets }); loadPublic(); } catch (e) { showToast('Not saved to server', e.message, true); }
+        }, 400);
+    }
+    // loads the latest admissions, enquiries, papers and results from the server (first time: uploads this browser's data)
+    async function pullAdmin() {
+        let r = await api('adminGet', { token: adminToken }); const sets = {};
+        if (r.admissions === null) sets.admissions = db.admissions;
+        if (r.enquiries === null) sets.enquiries = db.enquiries;
+        if (r.exams === null) sets.exams = exams;
+        if (Object.keys(sets).length) { await api('adminSet', { token: adminToken, sets }); r = await api('adminGet', { token: adminToken }); }
+        db.admissions = r.admissions; db.enquiries = r.enquiries;
+        localStorage.setItem('dcc_admissions', JSON.stringify(db.admissions)); localStorage.setItem('dcc_enquiries', JSON.stringify(db.enquiries));
+        localStorage.setItem('dcc_exams', JSON.stringify(r.exams)); localStorage.setItem('dcc_exam_results', JSON.stringify(r.results)); xReload();
+    }
+    async function refreshAdminData() {
+        try { await pullAdmin(); renderAdminTables(); showToast('Refreshed', 'Latest data loaded from the server.'); } catch (e) { showToast('Refresh failed', e.message, true); }
+    }
+    async function sendForm(kind, record) {   // public admission / enquiry forms go to the shared server
+        if (adminToken) return;
+        try { await api('form', { kind, record }); } catch (e) { showToast('Could not send', 'Please check your connection or call us directly.', true); }
+    }
+    async function loadPublic() { try { pubData = (await api('publicInfo')).results || {}; } catch (e) { return; } renderPublicResults(); }
+    const xB64 = buf => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
+    const X = id => document.getElementById(id);
+    const xe = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    // Escapes text, then allows chemistry shorthand: H_{2}O -> subscript, Ca^{2+} -> superscript
+    const xf = s => xe(s).replace(/_\{([^}]*)\}/g,'<sub>$1</sub>').replace(/\^\{([^}]*)\}/g,'<sup>$1</sup>').replace(/\n/g,'<br>');
+    const xload = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
+    const xTags = ['JEE', 'NEET'];
+    const newExam = tag => ({ id: 'EX' + tag + Date.now(), tag, title: tag + ' Chemistry Test', duration: 60, correct: 1, negative: 0, active: false, showResults: true, key: [], hasPdf: false });
+
+    function xLoadExams() {
+        let e = xload('dcc_exams', null);
+        if (!e) e = {};
+        xTags.forEach(t => { if (!e[t]) e[t] = newExam(t); e[t].tag = t; if (!Array.isArray(e[t].key)) e[t].key = []; });
+        return e;
+    }
+    let exams = xLoadExams(), exam = exams.JEE, xTag = null, xaCur = 'setup';
+    let examResults = xload('dcc_exam_results', []);
+    let xSessions = xload('dcc_exam_sessions', {});
+    let xInstrSnap = '', xStudent = null, xSess = null, xIdx = 0, xTimer = null, xAdmin = false;
+
+    const xSave = () => {
+        localStorage.setItem('dcc_exams', JSON.stringify(exams));
+        localStorage.setItem('dcc_exam_results', JSON.stringify(examResults));
+        localStorage.setItem('dcc_exam_sessions', JSON.stringify(xSessions));
+        pushSoon('exams', exams);
+    };
+    const xReload = () => { exams = xLoadExams(); if (xTag && xAdmin) exam = exams[xTag]; examResults = xload('dcc_exam_results', []); xSessions = xload('dcc_exam_sessions', {}); };
+    const xFmt = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s/3600), m = Math.floor(s%3600/60), q = s%60, p = n => String(n).padStart(2,'0'); return (h ? h + ':' : '') + p(m) + ':' + p(q); };
+    const xResultsNow = () => examResults.filter(r => r.exam_id === exam.id);
+
+    // ---------- PDF storage (IndexedDB) and reader (pdf.js) ----------
+    if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    // ---------- Navigation ----------
+    function showExamView(n) { document.querySelectorAll('.exam-view').forEach(v => v.classList.add('hidden')); X('ex-v-' + n).classList.remove('hidden'); window.scrollTo(0,0); }
+    function openExamPortal() { xReload(); X('exam-modal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; showExamView('choose'); }
+    function closeExamPortal() { X('exam-modal').classList.add('hidden'); document.body.style.overflow = ''; xAdmin = false; xStudent = null; xTag = null; X('xs-id').value = ''; X('xs-pw').value = ''; X('xa-pw').value = ''; }
+    window.onbeforeunload = e => { if (xSess) { e.preventDefault(); e.returnValue = ''; } };
+
+    // ---------- Admin: credentials column in the existing Admin Portal ----------
+    function autoCred(id) {
+        const a = db.admissions.find(x => x.id === id); if (!a) return;
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let pw = '';
+        for (let i = 0; i < 6; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+        X('exid-' + id).value = 'DCC' + new Date().getFullYear() + String(id).padStart(3, '0');
+        X('expw-' + id).value = pw;
+        saveCred(id);
+    }
+    function saveCred(id) {
+        const a = db.admissions.find(x => x.id === id); if (!a) return;
+        const sid = X('exid-' + id).value.trim(), pw = X('expw-' + id).value.trim();
+        if (!sid || !pw) return showToast('Missing details', 'Enter both Student ID and password.', true);
+        if (db.admissions.some(x => x.id !== id && (x.exam_id || '').toLowerCase() === sid.toLowerCase()))
+            return showToast('Duplicate ID', 'This Student ID is already used by another student.', true);
+        a.exam_id = sid; a.exam_pass = pw; saveDb();
+        showToast('Exam login saved', a.student_name + ' can now log in with ' + sid);
+    }
+
+    function saveTag(id, v) {
+        const a = db.admissions.find(x => x.id === id); if (!a) return;
+        if (v) a.exam_tag = v; else delete a.exam_tag;
+        saveDb(); showToast('Paper allocated', a.student_name + (v ? ' will get the ' + v + ' paper.' : ': no paper allocated.'));
+    }
+
+    // ---------- Admin login & tabs ----------
+    async function examAdminLogin(e) {
+        e.preventDefault();
+        try { const r = await api('adminLogin', { password: X('xa-pw').value }); adminToken = r.token; sessionStorage.setItem('dcc_admin_token', adminToken); await pullAdmin(); }
+        catch (er) { return showToast('Access Denied', er.message, true); }
+        xAdmin = true; X('xa-pw').value = ''; showExamView('admin'); xaPaper('JEE'); xaTab('setup');
+    }
+    function examAdminLogout() { xAdmin = false; showExamView('choose'); }
+    async function xaRefreshResults() {
+        try { examResults = (await api('adminGet', { token: adminToken })).results; xaRenderR(); } catch (e) { showToast('Could not refresh results', e.message, true); }
+    }
+    function xaPaper(t) {
+        xTag = t; exam = exams[t];
+        xTags.forEach(k => X('xg-' + k).classList.toggle('on', k === t));
+        xaTab(xaCur);
+    }
+    function xaTab(t) {
+        xaCur = t; X('x-paperhdr').textContent = xTag + ' paper';
+        ['setup', 'questions', 'results'].forEach(k => { X('xp-' + k).classList.toggle('hidden', k !== t); X('xt-' + k).classList.toggle('on', k === t); });
+        if (t === 'setup') { X('x-title').value = exam.title; X('x-duration').value = exam.duration; X('x-correct').value = exam.correct; X('x-negative').value = exam.negative; X('x-active').checked = exam.active; X('x-showres').checked = exam.showResults; xaTotals(); }
+        if (t === 'questions') xaRenderFiles();
+        if (t === 'results') { xaRenderR(); xaRefreshResults(); }
+    }
+    // Total marks = number of questions x marks for each question; negative marks are charged per wrong answer
+    function xaTotals() {
+        const n = exam.key.length, m = parseFloat(X('x-correct').value), g = parseFloat(X('x-negative').value), f = v => +v.toFixed(2);
+        if (!(m > 0) || !(g >= 0)) { X('x-totals').innerHTML = 'Enter the marks for each question and the negative marks.'; return; }
+        X('x-totals').innerHTML = n
+            ? `<p>Questions in this paper: <b>${n}</b></p>
+               <p>Total marks = ${n} questions &times; ${m} = <b>${f(n * m)}</b></p>
+               <p>Each correct answer <b class="text-emerald-700">+${m}</b>, each wrong answer <b class="text-rose-600">-${g}</b>, unanswered <b>0</b></p>
+               <p>Most that can be lost if every answer is wrong = ${n} &times; ${g} = <b class="text-rose-600">-${f(n * g)}</b></p>`
+            : '<p>Total marks = number of questions &times; marks for each question. Upload the answer key to see the totals.</p>';
+    }
+    function xaSaveSettings() {
+        const d = parseInt(X('x-duration').value), c = parseFloat(X('x-correct').value), n = parseFloat(X('x-negative').value);
+        if (!X('x-title').value.trim() || !(d >= 1) || !(c > 0) || !(n >= 0)) return showToast('Check settings', 'Title, time (min 1) and marks are required.', true);
+        const why = xReady(exam); if (X('x-active').checked && why) return showToast('Paper not ready', why, true);
+        Object.assign(exam, { title: X('x-title').value.trim(), duration: d, correct: c, negative: n, active: X('x-active').checked, showResults: X('x-showres').checked });
+        xSave(); renderPublicResults(); showToast('Settings saved', exam.active ? 'Exam is open for students.' : 'Exam is closed for students.');
+    }
+    function xaNewExam() {
+        if (!confirm('This deletes the ' + xTag + ' paper, its answer key, in-progress attempts and results. Continue?')) return;
+        const old = exam; examResults = examResults.filter(r => r.exam_id !== old.id);
+        api('adminDelResults', { token: adminToken, examId: old.id }).catch(e => showToast('Server error', e.message, true));
+        exam = exams[xTag] = newExam(xTag); xSave(); xaTab('setup');
+        showToast('New exam started', 'Upload the question paper and answer key, then open the exam.');
+    }
+
+    // ---------- Admin: question paper PDF + answer key PDF ----------
+    const xIsPdf = f => /\.pdf$/i.test(f.name) || f.type === 'application/pdf';
+    function xPdfReady() { if (typeof pdfjsLib === 'undefined') { showToast('PDF reader not loaded', 'Check your internet connection and reload the page.', true); return false; } return true; }
+    function xReady(ex) {
+        if (!ex.hasPdf) return 'Upload the question paper PDF first.';
+        if (!ex.key.length) return 'Upload the answer key PDF (or enter the number of questions and answers).';
+        const miss = ex.key.reduce((a, k, i) => k ? a : a.concat(i + 1), []);
+        return miss.length ? 'Answer key is missing for Q' + miss.slice(0, 5).join(', Q') + (miss.length > 5 ? ' and ' + (miss.length - 5) + ' more.' : '.') : '';
+    }
+    function xaRenderFiles() {
+        X('x-warn').classList.toggle('hidden', !(xResultsNow().length || Object.values(xSessions).some(s => s.examId === exam.id)));
+        X('x-qinfo').innerHTML = exam.hasPdf ? `<span class="text-emerald-700 font-semibold">Uploaded:</span> ${xe(exam.pdfName)} (${exam.pdfPages} pages, ${Math.round(exam.pdfSize / 1024)} KB)` : 'No question paper uploaded yet.';
+        X('x-kinfo').innerHTML = exam.keyName ? `Last key file: ${xe(exam.keyName)}` : 'No answer key uploaded yet.';
+        X('x-nq').value = exam.key.length || '';
+        X('x-keygrid').innerHTML = exam.key.map((k, i) => `<label class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 border ${k ? 'border-slate-200' : 'border-rose-400 bg-rose-50'} rounded-lg px-2 py-1">Q${i + 1}
+            <select onchange="xaSetKey(${i}, this.value)" class="ml-auto bg-transparent text-xs"><option value="">-</option>${['A','B','C','D'].map(c => `<option ${c === k ? 'selected' : ''}>${c}</option>`).join('')}</select></label>`).join('');
+        const why = xReady(exam);
+        X('x-keystat').innerHTML = exam.key.length ? (why ? `<span class="text-rose-600">${xe(why)}</span>` : '<span class="text-emerald-700 font-semibold">Paper and key are complete. You can open the exam in Settings.</span>') : '';
+    }
+    async function xaUploadQ(inp) {
+        const f = inp.files[0], ex = exam; inp.value = ''; if (!f) return;
+        if (!xIsPdf(f)) return showToast('Not a PDF', 'Please choose a PDF file.', true);
+        if (f.size > 4 * 1024 * 1024) return showToast('File too large', 'The question paper PDF can be at most 4 MB.', true);
+        if (!xPdfReady()) return;
+        try {
+            const buf = await f.arrayBuffer(), pdf = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
+            await api('adminPutPdf', { token: adminToken, id: ex.id, b64: xB64(buf) });
+            Object.assign(ex, { hasPdf: true, pdfName: f.name, pdfPages: pdf.numPages, pdfSize: f.size }); xSave();
+            if (exam === ex) xaRenderFiles();
+            showToast('Question paper saved', f.name + ' (' + pdf.numPages + ' pages)');
+        } catch (e) { showToast('Upload failed', e && /server|log in|large|reach/i.test(e.message || '') ? e.message : 'This PDF could not be read or saved.', true); }
+    }
+    // Reads text lines out of a pdf.js text layer (items grouped by vertical position)
+    function xPdfLines(items) {
+        const rows = [];
+        items.forEach(it => { if (!it.str.trim()) return; const y = Math.round(it.transform[5] / 3); let r = rows.find(q => q.y === y); if (!r) rows.push(r = { y, t: [] }); r.t.push({ x: it.transform[4], s: it.str }); });
+        return rows.sort((a, b) => b.y - a.y).map(r => r.t.sort((a, b) => a.x - b.x).map(t => t.s).join(' ')).join('\n');
+    }
+    // Finds answers written like "1. A", "2-C", "Q3: b", "4 (D)" and returns ['A','C',...] (null where missing)
+    function parseKeyText(text) {
+        const t = text.replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ');
+        const grab = re => { const m = {}; let x; while ((x = re.exec(t))) { const q = +x[1]; if (q >= 1 && q <= 300 && !(q in m)) m[q] = x[2].toUpperCase(); } return m; };
+        let m = grab(/(?:^|[^\d.])(?:Q(?:ue)?\.?\s*)?(\d{1,3})\s*[.):\-=]?\s*\(?\s*([A-Da-d])\s*\)?(?![A-Za-z0-9])/g);
+        if (Object.keys(m).length < 3) { const d = grab(/(?:^|[^\d.])(?:Q(?:ue)?\.?\s*)?(\d{1,3})\s*[.):\-=]\s*\(?\s*([1-4])\s*\)?(?![A-Za-z0-9])/g); m = {}; Object.keys(d).forEach(q => m[q] = 'ABCD'[+d[q] - 1]); }
+        const qs = Object.keys(m).map(Number); if (!qs.length) return [];
+        const max = Math.max(...qs); let run = 0; while (m[run + 1]) run++;
+        const n = qs.length >= 0.8 * max ? max : run;
+        return n ? Array.from({ length: n }, (_, i) => m[i + 1] || null) : [];
+    }
+    async function xaUploadKey(inp) {
+        const f = inp.files[0], ex = exam; inp.value = ''; if (!f) return;
+        if (!xIsPdf(f)) return showToast('Not a PDF', 'Please choose a PDF file.', true);
+        if (f.size > 30 * 1024 * 1024) return showToast('File too large', 'Maximum size is 30 MB.', true);
+        if (!xPdfReady()) return;
+        try {
+            const pdf = await pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise; let text = '';
+            for (let p = 1; p <= pdf.numPages; p++) text += xPdfLines((await (await pdf.getPage(p)).getTextContent()).items) + '\n';
+            const key = parseKeyText(text); ex.keyName = f.name;
+            if (key.length) ex.key = key;
+            xSave(); if (exam === ex) xaRenderFiles();
+            if (key.length) showToast('Answer key read', key.length + ' answers found. Please check them below.');
+            else showToast('Could not read answers', 'No answers like "1. A" found (a scanned PDF?). Enter the number of questions and set answers below.', true);
+        } catch (e) { showToast('Upload failed', 'This PDF could not be read.', true); }
+    }
+    function xaSetKey(i, v) { exam.key[i] = v || null; xSave(); xaRenderFiles(); }
+    function xaApplyN() {
+        const n = parseInt(X('x-nq').value);
+        if (!(n >= 1 && n <= 300)) return showToast('Check number', 'Enter a number between 1 and 300.', true);
+        exam.key = Array.from({ length: n }, (_, i) => exam.key[i] || null); xSave(); xaRenderFiles();
+    }
+
+    // ---------- Admin: results ----------
+    function xDownload(name, text) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+
+    function xaRenderR() {
+        const rs = xResultsNow().slice().sort((a, b) => b.score - a.score || a.time_taken - b.time_taken);
+        X('x-rlist').innerHTML = rs.length ? rs.map(r => `<tr><td class="p-2 font-semibold">${xe(r.student_id)}</td><td class="p-2">${xe(r.name)}</td><td class="p-2 font-bold">${r.score} / ${r.total}</td>
+            <td class="p-2">${r.correct} / ${r.wrong} / ${r.blank}</td><td class="p-2">${r.gained === undefined ? '-' : '+' + r.gained + ' / -' + r.lost}</td><td class="p-2">${r.percent}%</td><td class="p-2">${xFmt(r.time_taken)}${r.auto ? ' (auto)' : ''}</td><td class="p-2 text-[10px] text-slate-500">${xe(r.submitted_at)}</td>
+            <td class="p-2"><button onclick="xaResetAttempt('${xe(r.id)}')" class="text-rose-600 font-semibold">Reset</button></td></tr>`).join('')
+            : '<tr><td colspan="9" class="p-4 text-center text-slate-400">No submissions yet</td></tr>';
+    }
+    async function xaResetAttempt(id) {
+        const r = examResults.find(x => x.id === id); if (!r || !confirm('Delete this result and let the student attempt again?')) return;
+        try { await api('adminDelResults', { token: adminToken, examId: r.exam_id, sid: r.student_id }); } catch (e) { return showToast('Server error', e.message, true); }
+        examResults = examResults.filter(x => x.id !== id); xaRenderR(); loadPublic();
+    }
+    function xaExport() {
+        const rs = xResultsNow(); if (!rs.length) return showToast('Nothing to export', 'No submissions yet.', true);
+        const cols = ['student_id','name','class_grade','score','total','gained','lost','correct','wrong','blank','percent','time_taken','submitted_at'];
+        xDownload('exam_results_' + xTag + '.csv', [cols.join(',')].concat(rs.map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','))).join('\n'));
+    }
+
+    // ---------- Student: login, instructions ----------
+    function xMessage(title, body, r) {
+        X('d-title').textContent = title; X('d-body').textContent = body;
+        const st = X('d-stats'); st.classList.toggle('hidden', !r);
+        if (r) st.innerHTML = [['Score', r.score + ' / ' + r.total], ['Percentage', r.percent + '%'], ['Right / Wrong / Blank', r.correct + ' / ' + r.wrong + ' / ' + r.blank]].concat(r.gained === undefined ? [] : [['Marks gained', '+' + r.gained], ['Negative marks', '-' + r.lost], ['Total marks', r.total]])
+            .map(([l, v]) => `<div class="bg-slate-50 rounded-lg p-3"><div class="font-bold text-slate-900">${v}</div><div class="text-slate-500 text-[11px]">${l}</div></div>`).join('');
+        showExamView('done');
+    }
+    async function studentLogin(e) {
+        e.preventDefault(); let r;
+        try { r = await api('studentLogin', { id: X('xs-id').value, pw: X('xs-pw').value }); } catch (er) { return showToast('Login failed', er.message, true); }
+        xStudent = r.student; studentToken = r.token || '';
+        if (r.status === 'notag') return xMessage('No paper allocated', 'Your teacher has not allocated a JEE or NEET paper to you yet.');
+        if (r.status === 'done') return xMessage('Test already submitted', 'You have already completed "' + r.title + '". Results are shown on the home page.', r.result);
+        if (r.status === 'closed') return xMessage('No exam available', 'There is no exam open right now. Please check with your teacher.');
+        const m = r.meta; xTag = m.tag;
+        exam = { id: m.examId, tag: m.tag, title: m.title, duration: m.duration, correct: m.correct, negative: m.negative, key: new Array(m.n).fill(''), pdfPages: m.pages };
+        if (r.status === 'resume') { xSess = { sid: xStudent.exam_id, end: Date.now() + r.remaining, ans: r.ans || {} }; return xsRun(); }
+        xBuildInstr(); X('i-agree').checked = false; X('i-start').disabled = true; showExamView('instr');
+    }
+    // Instructions are generated from the marks, negative marking, time and paper the admin has set right now
+    function xBuildInstr() {
+        const n = exam.key.length, m = exam.correct, g = exam.negative, f = v => +v.toFixed(2);
+        xInstrSnap = [m, g, exam.duration, n].join('|');
+        X('i-title').textContent = exam.title + ' (' + xTag + ')'; X('i-student').textContent = xStudent.student_name + ' (' + xStudent.exam_id + ')';
+        const cell = (v, l, c) => `<div class="rounded-lg border border-slate-200 bg-slate-50 p-2"><div class="font-bold ${c || 'text-slate-900'}">${v}</div><div class="text-[10px] text-slate-500">${l}</div></div>`;
+        X('i-scheme').innerHTML = cell(n, 'Questions') + cell(exam.duration + ' min', 'Time') + cell(f(n * m), 'Total marks')
+            + cell('+' + m, 'Each correct', 'text-emerald-700') + cell(g > 0 ? '-' + g : '0', 'Each wrong', g > 0 ? 'text-rose-600' : '') + cell('0', 'Unanswered');
+        X('i-list').innerHTML = [
+            `This test has <b>${n}</b> multiple-choice questions (question paper: ${exam.pdfPages} page(s)) and must be finished in <b>${exam.duration} minutes</b>.`,
+            `Each correct answer gives <b>+${m}</b> mark(s). Total marks = ${n} questions &times; ${m} = <b>${f(n * m)}</b>.`,
+            g > 0 ? `Each wrong answer deducts <b>${g}</b> mark(s) (negative marking). If every answer were wrong you would lose ${n} &times; ${g} = <b>${f(n * g)}</b> marks. Your score = marks for correct answers minus negative marks.`
+                  : 'There is <b>no negative marking</b>: wrong answers do not reduce your score.',
+            'Questions you leave unanswered get zero marks and no negative marking.',
+            'The timer starts when you click Start Test and cannot be paused.',
+            'The question paper is shown as a PDF. Scroll through it and mark your answers in the Answer Sheet by tapping A, B, C or D next to the question number.',
+            'Tap the same option again to clear an answer. Your answers are saved as you go.',
+            'If your browser closes, log in again to resume. The timer keeps running.',
+            'The test submits automatically when time is over. You can also click Submit Test when finished; submitted answers cannot be changed.'
+        ].map(t => `<li>${t}</li>`).join('');
+    }
+    function xsLeave() { xStudent = null; studentToken = ''; showExamView('choose'); }
+    async function xsStart() {
+        X('i-start').disabled = true;
+        try {
+            const r = await api('studentStart', { token: studentToken, snap: xInstrSnap });
+            if (r.changed) {
+                const m = r.meta; Object.assign(exam, { title: m.title, duration: m.duration, correct: m.correct, negative: m.negative, key: new Array(m.n).fill(''), pdfPages: m.pages });
+                xBuildInstr(); X('i-agree').checked = false;
+                return showToast('Instructions updated', 'The marking scheme or time was changed by the admin. Please read the instructions again.', true);
+            }
+            xSess = { sid: xStudent.exam_id, end: Date.now() + r.remaining, ans: r.ans || {} }; xsRun();
+        } catch (er) { showToast('Could not start', er.message, true); X('i-start').disabled = !X('i-agree').checked; }
+    }
+
+    // ---------- Student: test ----------
+    function xsRun() {
+        X('t-title').textContent = exam.title + ' (' + xTag + ')'; X('t-student').textContent = xStudent.student_name + ' (' + xStudent.exam_id + ')';
+        showExamView('test'); xsBuildSheet(); xsTick(); if (!xSess) return;
+        clearInterval(xTimer); xTimer = setInterval(xsTick, 1000); xsShowPdf();
+    }
+    function xsTick() {
+        if (!xSess) return;
+        const left = (xSess.end - Date.now()) / 1000;
+        X('t-timer').textContent = xFmt(left); X('t-timer').style.background = left <= 300 ? '#e11d48' : '';
+        if (left <= 0) xsSubmit(true);
+    }
+    async function xsShowPdf() {
+        const box = X('t-pdf'), id = exam.id; box.innerHTML = '<p class="text-xs text-slate-600 p-4">Loading question paper...</p>';
+        try {
+            if (typeof pdfjsLib === 'undefined') throw new Error('reader');
+            const r = await api('studentPdf', { token: studentToken }), bin = atob(r.b64), buf = new Uint8Array(bin.length); for (let k = 0; k < bin.length; k++) buf[k] = bin.charCodeAt(k);
+            const pdf = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise; box.innerHTML = '';
+            const w = Math.min((box.clientWidth || 700) - 24, 900), dpr = Math.min(window.devicePixelRatio || 1, 2);
+            for (let p = 1; p <= pdf.numPages; p++) {
+                if (!xSess) return;
+                const page = await pdf.getPage(p), v = page.getViewport({ scale: w / page.getViewport({ scale: 1 }).width * dpr });
+                const c = document.createElement('canvas'); c.width = v.width; c.height = v.height; c.style.width = v.width / dpr + 'px'; c.style.height = v.height / dpr + 'px'; c.className = 'mx-auto mb-3 bg-white shadow rounded';
+                box.appendChild(c); await page.render({ canvasContext: c.getContext('2d'), viewport: v }).promise;
+            }
+        } catch (e) { box.innerHTML = '<p class="p-4 text-sm text-rose-600">The question paper could not be loaded. Please tell your teacher. (Check your internet connection and reload the page.)</p>'; }
+    }
+    let xSaveT = null, xSubmitting = false, xBlockUntil = 0;
+    function xsBuildSheet() {
+        X('t-sheet').innerHTML = exam.key.map((_, i) => `<div id="xr-${i}" class="flex items-center gap-2 py-1"><span id="xn-${i}" class="w-8 text-xs font-bold text-slate-500">${i + 1}</span>${[0, 1, 2, 3].map(j => `<button onclick="xsPick(${i},${j})" class="xbub">${'ABCD'[j]}</button>`).join('')}</div>`).join('');
+        exam.key.forEach((_, i) => xsPaint(i)); xsCount();
+    }
+    function xsPaint(i) {
+        const a = xSess.ans[i];
+        X('xr-' + i).querySelectorAll('button').forEach((b, j) => b.classList.toggle('sel', a === j));
+        X('xn-' + i).className = 'w-8 text-xs font-bold ' + (a !== undefined ? 'text-emerald-600' : 'text-slate-500');
+    }
+    function xsCount() { X('t-count').textContent = Object.keys(xSess.ans).length + ' of ' + exam.key.length + ' answered'; }
+    function xsPick(i, j) {
+        if (xSess.ans[i] === j) delete xSess.ans[i]; else xSess.ans[i] = j;
+        xsPaint(i); xsCount(); clearTimeout(xSaveT); xSaveT = setTimeout(xsPush, 800);
+    }
+    async function xsPush() { if (!xSess) return; try { await api('studentSave', { token: studentToken, ans: xSess.ans }); } catch (e) {} }
+
+    async function xsSubmit(auto) {
+        const s = xSess; if (!s || xSubmitting || (auto && Date.now() < xBlockUntil)) return;
+        if (!auto) {
+            const answered = Object.keys(s.ans).length;
+            if (!confirm('You have answered ' + answered + ' of ' + exam.key.length + ' questions. Submit the test now?')) return;
+        }
+        xSubmitting = true;
+        try {
+            const r = await api('studentSubmit', { token: studentToken, ans: s.ans, auto: !!auto });
+            xSess = null; xSubmitting = false; clearInterval(xTimer); clearTimeout(xSaveT); loadPublic();
+            xMessage(auto ? "Time's up. Test submitted." : 'Test submitted', 'Your answers have been recorded. Results are shown on the home page.', r.result);
+        } catch (er) {
+            xSubmitting = false; if (auto) xBlockUntil = Date.now() + 5000;
+            showToast('Could not submit', er.message + (auto ? ' Trying again...' : ' Please try again.'), true);
+        }
+    }
+
+    // ---------- Reset exam (button in Admin Portal) ----------
+    async function openExamReset() {
+        try { examResults = (await api('adminGet', { token: adminToken })).results; } catch (e) {}
+        xReload();
+        xTags.forEach(t => { const n = examResults.filter(r => r.exam_id === exams[t].id).length; X('xr-cnt-' + t).textContent = '(' + n + ' result' + (n === 1 ? '' : 's') + ')'; });
+        X('xr-modal').classList.remove('hidden');
+    }
+    async function confirmExamReset() {
+        if (!adminToken) return showToast('Please log in', 'Open the Admin Portal and log in again.', true);
+        xReload();
+        const which = document.querySelector('input[name="xr-which"]:checked').value, tags = which === 'BOTH' ? xTags : [which];
+        for (const t of tags) {
+            const old = exams[t];
+            try { await api('adminDelResults', { token: adminToken, examId: old.id }); } catch (e) { return showToast('Server error', e.message, true); }
+            examResults = examResults.filter(r => r.exam_id !== old.id); exams[t] = newExam(t);
+        }
+        if (xTag) exam = exams[xTag];
+        xSave(); if (xAdmin) xaTab(xaCur);
+        X('xr-modal').classList.add('hidden');
+        showToast('Exam reset', (which === 'BOTH' ? 'JEE and NEET papers' : which + ' paper') + ' deleted and results cleared.');
+    }
+
+    // ---------- Public results on home page (one table per paper) ----------
+    function renderPublicResults() {
+        const wrap = X('public-results-wrap'), cards = []; let n = 0;
+        xTags.forEach(t => {
+            const d = pubData[t]; if (!d || !d.results.length) return;
+            const rs = d.results.slice().sort((a, b) => b.score - a.score || a.time_taken - b.time_taken); n += rs.length;
+            const rows = rs.map(r => {
+                const rank = 1 + rs.filter(x => x.score > r.score).length;
+                return `<tr class="hover:bg-slate-50"><td class="p-3 font-bold ${rank <= 3 ? 'text-brand-700' : 'text-slate-500'}">${rank}</td><td class="p-3 font-semibold text-slate-900">${xe(r.name)}</td>
+                    <td class="p-3">${xe(r.class_grade)}</td><td class="p-3 font-bold">${r.score} / ${r.total}</td><td class="p-3">${r.percent}%</td><td class="p-3 text-slate-500">${xFmt(r.time_taken)}</td></tr>`;
+            }).join('');
+            cards.push(`<div class="bg-white text-slate-800 rounded-2xl shadow-xl overflow-hidden">
+                <div class="px-4 py-3 bg-slate-100 flex justify-between items-center gap-3"><h3 class="font-bold text-sm text-slate-900">${t}: ${xe(d.title)}</h3><span class="text-xs text-slate-500">${rs.length} appeared</span></div>
+                <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="text-slate-700 text-xs font-bold border-b border-slate-200"><tr><th class="p-3">Rank</th><th class="p-3">Student</th><th class="p-3">Class</th><th class="p-3">Score</th><th class="p-3">Percentage</th><th class="p-3">Time Taken</th></tr></thead>
+                <tbody class="divide-y divide-slate-100">${rows}</tbody></table></div></div>`);
+        });
+        wrap.innerHTML = cards.length ? cards.join('') : '<div class="bg-white text-slate-400 text-sm text-center rounded-2xl shadow-xl p-6">Results will be published here once students complete the test.</div>';
+        X('results-subtitle').textContent = n ? n + ' student' + (n > 1 ? 's' : '') + ' have appeared in the online tests' : 'Results appear here as soon as students finish the online test.';
+    }
+    // Admissions banner: the session year updates itself (next session starts showing from November)
+    function updateAdmissionSession() {
+        const d = new Date(), y = d.getMonth() >= 10 ? d.getFullYear() + 1 : d.getFullYear(), s = y + '-' + String(y + 1).slice(2);
+        document.querySelectorAll('[data-adm-session]').forEach(el => el.textContent = s);
+    }
+    document.addEventListener('DOMContentLoaded', () => { renderPublicResults(); loadPublic(); setInterval(loadPublic, 60000); updateAdmissionSession(); });
+    document.addEventListener('click', e => {
+        const m = document.getElementById('mobile-menu'), b = document.getElementById('mobile-menu-btn');
+        if (!m || m.classList.contains('hidden')) return;
+        if (e.target.closest('#mobile-menu a, #mobile-menu button') || !(m.contains(e.target) || b.contains(e.target))) m.classList.add('hidden');
+    });
+    </script>
+</body>
+</html>
