@@ -1086,6 +1086,7 @@
                         <h4 class="font-bold text-sm text-slate-900">1. Question paper (PDF)</h4>
                         <input type="file" accept="application/pdf,.pdf" onchange="xaUploadQ(this)" class="text-xs">
                         <p id="x-qinfo" class="text-[11px] text-slate-500"></p>
+                        <button id="x-qdownload" onclick="xaDownloadQ()" class="xbtn xbtn-l hidden">Download stored question paper</button>
                     </div>
                     <div class="border border-slate-200 rounded-xl p-4 space-y-2">
                         <h4 class="font-bold text-sm text-slate-900">2. Answer key (PDF)</h4>
@@ -1749,12 +1750,24 @@
     function xaRenderFiles() {
         X('x-warn').classList.toggle('hidden', !(xResultsNow().length || Object.values(xSessions).some(s => s.examId === exam.id)));
         X('x-qinfo').innerHTML = exam.hasPdf ? `<span class="text-emerald-700 font-semibold">Uploaded:</span> ${xe(exam.pdfName)} (${exam.pdfPages} pages, ${Math.round(exam.pdfSize / 1024)} KB)` : 'No question paper uploaded yet.';
+        X('x-qdownload').classList.toggle('hidden', !exam.hasPdf);
         X('x-kinfo').innerHTML = exam.keyName ? `Last key file: ${xe(exam.keyName)}` : 'No answer key uploaded yet.';
         X('x-nq').value = exam.key.length || '';
         X('x-keygrid').innerHTML = exam.key.map((k, i) => `<label class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 border ${k ? 'border-slate-200' : 'border-rose-400 bg-rose-50'} rounded-lg px-2 py-1">Q${i + 1}
             <select onchange="xaSetKey(${i}, this.value)" class="ml-auto bg-transparent text-xs"><option value="">-</option>${['A','B','C','D'].map(c => `<option ${c === k ? 'selected' : ''}>${c}</option>`).join('')}</select></label>`).join('');
         const why = xReady(exam);
         X('x-keystat').innerHTML = exam.key.length ? (why ? `<span class="text-rose-600">${xe(why)}</span>` : '<span class="text-emerald-700 font-semibold">Paper and key are complete. You can open the exam in Settings.</span>') : '';
+    }
+    async function xaDownloadQ() {
+        if (!xAdmin || !adminToken || !exam?.hasPdf) return;
+        try {
+            const r = await api('adminGetPdf', { token: adminToken, id: exam.id });
+            const raw = atob(r.b64), bytes = new Uint8Array(raw.length);
+            for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+            const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+            const a = document.createElement('a'); a.href = url; a.download = r.filename || 'question-paper.pdf'; a.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1500);
+        } catch (e) { showToast('Download failed', e.message, true); }
     }
     async function xaUploadQ(inp) {
         const f = inp.files[0], ex = exam; inp.value = ''; if (!f) return;
