@@ -1020,7 +1020,12 @@
           <input id="cp-password" class="xin" type="password" placeholder="Password" autocomplete="current-password">
           <button onclick="cpStudentLogin()" class="xbtn xbtn-p w-full">Sign in</button>
           <p id="cp-error" class="text-xs text-rose-600"></p>
-          <p class="text-xs text-slate-500">Teachers: use the existing Admin Portal login to manage classes.</p>
+          <div class="border-t pt-4 mt-4 space-y-2">
+            <h3 class="font-bold text-slate-900">Teacher / admin login</h3>
+            <input id="cp-admin-password" type="password" class="xin" placeholder="Shared admin password" autocomplete="current-password">
+            <button onclick="cpAdminLogin()" class="xbtn xbtn-g w-full">Sign in as teacher</button>
+            <p class="text-xs text-slate-500">Uses the shared admin account. Admin password changes apply to all admin portals.</p>
+          </div>
           <details class="border-t pt-3 mt-3 space-y-2">
             <summary class="font-semibold text-xs cursor-pointer">Owner password recovery</summary>
             <input id="cp-recovery-key" type="password" class="xin" placeholder="Owner recovery key">
@@ -1669,6 +1674,15 @@
     async function cpTryAdmin() {
       try { const r = await api('classAdminList', { token: adminToken }); cpIsAdmin = true; cpClassesAdmin = r.classes || []; cpStudentsAdmin = r.students || []; X('cp-login').classList.add('hidden'); X('cp-admin').classList.remove('hidden'); cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); }
       catch (_) { /* Admin can sign in from the existing Admin Portal. */ }
+    }
+    async function cpAdminLogin() {
+      X('cp-error').textContent = '';
+      try {
+        const r = await api('adminLogin', { password: X('cp-admin-password').value });
+        adminToken = r.token; sessionStorage.setItem('dcc_admin_token', adminToken);
+        await cpTryAdmin();
+        if (!cpIsAdmin) throw new Error('Admin sign-in could not be completed.');
+      } catch (e) { X('cp-error').textContent = e.message; }
     }
     async function cpStudentLogin() {
       X('cp-error').textContent = '';
