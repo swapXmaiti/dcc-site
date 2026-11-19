@@ -116,6 +116,16 @@ export function makeApi(store) {
       return {};
     },
     async adminPutPdf(b) { await admin(b); if (typeof b.b64 !== "string" || b.b64.length > 5.6e6 || !b.id) throw new Err("PDF too large (max about 4 MB)."); await store.set("pdf:" + b.id, b.b64); return {}; },
+    async adminGetPdf(b) {
+      await admin(b);
+      const id = String(b.id || "");
+      if (!id || id.length > 120) throw new Err("Invalid paper ID.");
+      const ex = Object.values(await J("exams", {})).find(e => e.id === id);
+      if (!ex || !ex.hasPdf) throw new Err("No question paper is registered for this exam.", 404);
+      const b64 = await store.get("pdf:" + id);
+      if (!b64) throw new Err("The stored question paper was not found.", 404);
+      return { b64, filename: String(ex.pdfName || "question-paper.pdf").replace(/[^a-zA-Z0-9._-]/g, "_") };
+    },
     async adminDelResults(b) {
       await admin(b); const id = String(b.examId || "");
       if (b.sid) { await store.delete(`res:${id}:${enc(b.sid)}`); return {}; }
