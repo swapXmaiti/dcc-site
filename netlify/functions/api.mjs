@@ -141,7 +141,9 @@ export function makeApi(store) {
       await admin(b);
       const { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } = process.env;
       if (!GOOGLE_CLIENT_ID || !GOOGLE_REDIRECT_URI || !process.env.GOOGLE_CLIENT_SECRET) throw new Err("Google OAuth is not configured in Netlify yet.", 503);
-      const state = sign({ role: "googleOAuth", nonce: crypto.randomBytes(16).toString("hex") }, 0.25);
+      const nonce = crypto.randomBytes(24).toString("hex");
+      await S("google:oauth-state:" + nonce, { createdAt: Date.now() });
+      const state = sign({ role: "googleOAuth", nonce }, 0.25);
       const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
       url.search = new URLSearchParams({ client_id: GOOGLE_CLIENT_ID, redirect_uri: GOOGLE_REDIRECT_URI, response_type: "code", scope: "https://www.googleapis.com/auth/drive.readonly", access_type: "offline", prompt: "consent", state }).toString();
       return { url: url.toString() };
@@ -149,10 +151,18 @@ export function makeApi(store) {
     async classGoogleList(b) {
       await admin(b);
       const token = await googleAccessToken();
-      const q = "trashed=false and mimeType='video/mp4'";
+      const headers = { authorization: "Bearer " + token };
+      const folderQuery = "trashed=false and mimeType='application/vnd.google-apps.folder' and name='Meet Recordings'";
+      const folderUrl = "https://www.googleapis.com/drive/v3/files?" + new URLSearchParams({ q: folderQuery, pageSize: "20", fields: "files(id,name)" });
+      const folderResponse = await fetch(folderUrl, { headers }), folderData = await folderResponse.json();
+      if (!folderResponse.ok) throw new Err("Google Drive could not find the Meet Recordings folder. Check Drive API permissions.", 502);
+      const folders = folderData.files || [];
+      if (!folders.length) return { recordings: [] };
+      const folderIds = folders.map(x => "'" + String(x.id).replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "' in parents").join(" or ");
+      const q = "trashed=false and mimeType='video/mp4' and (" + folderIds + ")";
       const url = "https://www.googleapis.com/drive/v3/files?" + new URLSearchParams({ q, pageSize: "100", orderBy: "createdTime desc", fields: "files(id,name,mimeType,createdTime,size)" });
-      const response = await fetch(url, { headers: { authorization: "Bearer " + token } }), data = await response.json();
-      if (!response.ok) throw new Err("Google Drive could not list recordings. Check the Drive API and OAuth permissions.", 502);
+      const response = await fetch(url, { headers }), data = await response.json();
+      if (!response.ok) throw new Err("Google Drive could not list Meet recordings. Check the Drive API and OAuth permissions.", 502);
       return { recordings: data.files || [] };
     },
     async classAdminAttachRecording(b) {
@@ -176,7 +186,7 @@ export function makeApi(store) {
       const used = await J("class-views:" + enc(id) + ":" + enc(p.sid), 0);
       if (used >= access.maxViews) throw new Err("You have used all allowed views.", 403);
       const token = sign({ role: "classPlay", sid: p.sid, fileId: id, playId: crypto.randomBytes(16).toString("hex") }, 1 / 12);
-      return { url: (process.env.URL || "") + "/.netlify/functions/api?play=" + encodeURIComponent(token) };
+      return { url: new URL(b.requestUrl).origin + "/.netlify/functions/api?play=" + encodeURIComponent(token) };
     },
     async classAdminList(b) {
       await admin(b);
@@ -344,7 +354,10 @@ export function makeApi(store) {
       const url = new URL(req.url);
       if (url.searchParams.has("code") && url.searchParams.has("state")) {
         const state = verify(url.searchParams.get("state"), "googleOAuth");
-        if (!state || !url.searchParams.get("code")) return new Response("Google connection failed: invalid OAuth state.", { status: 400 });
+        if (!state || !state.nonce || !url.searchParams.get("code")) return new Response("Google connection failed: invalid OAuth state.", { status: 400 });
+        const stateKey = "google:oauth-state:" + state.nonce, pendingState = await J(stateKey);
+        if (!pendingState || Date.now() - pendingState.createdAt > 15 * 60 * 1000) return new Response("Google connection failed: this authorization request has expired. Please reconnect.", { status: 400 });
+        await store.delete(stateKey);
         try {
           const response = await fetch("https://oauth2.googleapis.com/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ code: url.searchParams.get("code"), client_id: process.env.GOOGLE_CLIENT_ID || "", client_secret: process.env.GOOGLE_CLIENT_SECRET || "", redirect_uri: process.env.GOOGLE_REDIRECT_URI || "", grant_type: "authorization_code" }) });
           const data = await response.json();
@@ -375,6 +388,7 @@ export function makeApi(store) {
     if (req.method !== "POST") return json({ error: "POST only" }, 405);
     try {
       const b = await req.json(), fn = actions[b.action]; if (!fn) throw new Err("Unknown action.");
+      if (b.action === "classRecordingPlay") b.requestUrl = req.url;
       return json(await fn(b));
     } catch (e) { return json({ error: e instanceof Err ? e.message : "Server error." }, e instanceof Err ? e.status : 500); }
   };
