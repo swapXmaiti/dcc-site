@@ -1039,8 +1039,20 @@
           <label class="flex gap-2 items-center text-sm"><input id="cp-publish" type="checkbox"> Publish for matching students</label>
           <button onclick="cpSaveClass()" class="xbtn xbtn-p">Save class</button>
           <div id="cp-admin-list" class="space-y-2"></div>
-          <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">
-            **Google Meet recording connection:** not connected yet. This portal will not pretend a recording exists. Recording discovery and playback require Google OAuth configuration, an eligible Meet plan and Drive API consent. Once connected, teachers can match recordings and set per-student view limits.
+          <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 space-y-2 text-xs text-amber-900">
+            <b>Google Meet recording connection</b>
+            <p>Connect the teacher's Google account to discover recordings saved by Google Meet. Actual recording still depends on account eligibility and the host starting/allowing recording.</p>
+            <div class="flex flex-wrap gap-2"><button onclick="cpConnectGoogle()" class="xbtn xbtn-p">Connect Google Drive</button><button onclick="cpLoadGoogle()" class="xbtn xbtn-l">Find Meet recordings</button></div>
+            <div id="cp-google-files" class="space-y-2"></div>
+          </div>
+          <div class="border rounded-xl p-3 space-y-2">
+            <b class="text-sm">Attach a recording and grant student access</b>
+            <select id="cp-class-select" class="xin"><option value="">Choose class</option></select>
+            <select id="cp-rec-select" class="xin"><option value="">Choose attached recording</option></select>
+            <button onclick="cpGrantAccess()" class="xbtn xbtn-g">Grant access</button>
+            <select id="cp-student-select" class="xin"><option value="">Choose student</option></select>
+            <input id="cp-view-limit" type="number" min="1" max="100" value="2" class="xin" placeholder="Allowed views">
+            <p class="text-xs text-slate-500">Access is checked on the server. Never share Drive files publicly. Each authorised playback session uses one view.</p>
           </div>
           <div class="border-t pt-4 space-y-2">
             <h4 class="font-bold">Change shared admin password</h4>
@@ -1638,7 +1650,7 @@
     <script>
 
     // ---------- Class Portal ----------
-    let cpToken = '', cpIsAdmin = false;
+    let cpToken = '', cpIsAdmin = false, cpClassesAdmin = [], cpStudentsAdmin = [], cpGoogleFiles = [];
     function openClassPortal() {
       X('class-modal').classList.remove('hidden');
       X('cp-login').classList.remove('hidden'); X('cp-student').classList.add('hidden'); X('cp-admin').classList.add('hidden');
@@ -1646,7 +1658,7 @@
     }
     function closeClassPortal() { X('class-modal').classList.add('hidden'); }
     async function cpTryAdmin() {
-      try { const r = await api('classAdminList', { token: adminToken }); cpIsAdmin = true; X('cp-login').classList.add('hidden'); X('cp-admin').classList.remove('hidden'); cpRenderAdmin(r.classes || []); }
+      try { const r = await api('classAdminList', { token: adminToken }); cpIsAdmin = true; cpClassesAdmin = r.classes || []; cpStudentsAdmin = r.students || []; X('cp-login').classList.add('hidden'); X('cp-admin').classList.remove('hidden'); cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); }
       catch (_) { /* Admin can sign in from the existing Admin Portal. */ }
     }
     async function cpStudentLogin() {
@@ -1661,7 +1673,7 @@
     async function cpLoadStudent() {
       const r = await api('classStudentData', { token: cpToken });
       X('cp-classes').innerHTML = r.classes.length ? r.classes.map(c => `<article class="border rounded-xl p-4"><h4 class="font-bold">${xe(c.title)}</h4><p class="text-xs text-slate-500">${xe(c.batch)} · ${xe(c.startsAt || 'Time to be announced')}</p><a class="inline-block mt-3 text-sm font-semibold text-teal-700 underline" target="_blank" rel="noopener" href="${xe(c.meetUrl)}">Join Google Meet</a></article>`).join('') : '<p class="text-sm text-slate-500">No published classes for your batch yet.</p>';
-      X('cp-recordings').textContent = r.recordings.length ? r.recordings.map(v => v.title + ': ' + v.remaining + ' view(s) remaining').join(' · ') : 'No recordings have been authorised for your account yet.';
+      X('cp-recordings').innerHTML = r.recordings.length ? r.recordings.map(v => `<div class="border rounded-lg p-3 flex items-center justify-between gap-3"><div><b>${xe(v.title)}</b><p class="text-xs text-slate-500">${v.remaining} of ${v.maxViews} views remaining</p></div><button class="xbtn xbtn-g" onclick="cpPlayRecording('${xe(v.recordingId)}')">Watch</button></div>`).join('') : 'No recordings have been authorised for your account yet.';
     }
     async function cpLogout() { cpToken = ''; X('cp-password').value = ''; X('cp-student').classList.add('hidden'); X('cp-login').classList.remove('hidden'); }
     async function cpSaveClass() {
@@ -1674,8 +1686,45 @@
       X('cp-admin-list').innerHTML = list.length ? list.map(c => `<div class="border rounded-lg p-3 flex justify-between gap-3 items-center"><div><b>${xe(c.title)}</b><p class="text-xs text-slate-500">${xe(c.batch)} · ${c.published ? 'Published' : 'Draft'} · ${c.archived ? 'Archived' : 'Active'}</p></div><button class="xbtn xbtn-l" onclick="cpArchiveClass('${xe(c.id)}')">Archive</button></div>`).join('') : '<p class="text-xs text-slate-500">No classes created yet.</p>';
     }
     async function cpArchiveClass(id) {
-      try { await api('classAdminArchive', { token: adminToken, id }); const r = await api('classAdminList', { token: adminToken }); cpRenderAdmin(r.classes || []); }
+      try { await api('classAdminArchive', { token: adminToken, id }); const r = await api('classAdminList', { token: adminToken }); cpClassesAdmin = r.classes || []; cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); }
       catch (e) { showToast('Could not archive class', e.message, true); }
+    }
+
+    function cpRenderGrantControls() {
+      X('cp-class-select').innerHTML = '<option value="">Choose class</option>' + cpClassesAdmin.filter(c => !c.archived).map(c => `<option value="${xe(c.id)}">${xe(c.title)}</option>`).join('');
+      X('cp-student-select').innerHTML = '<option value="">Choose student</option>' + cpStudentsAdmin.map(s => `<option value="${xe(s.id)}">${xe(s.name)} · ${xe(s.id)}</option>`).join('');
+      const recordings = cpClassesAdmin.flatMap(c => (c.recordings || []).map(r => ({ ...r, classId: c.id })));
+      X('cp-rec-select').innerHTML = '<option value="">Choose attached recording</option>' + recordings.map(r => `<option value="${xe(r.id)}">${xe(r.name)} · ${xe(r.classId)}</option>`).join('');
+    }
+    async function cpConnectGoogle() {
+      try { const r = await api('adminGoogleStart', { token: adminToken }); window.open(r.url, '_blank', 'noopener'); }
+      catch (e) { showToast('Google connection unavailable', e.message, true); }
+    }
+    async function cpLoadGoogle() {
+      try {
+        const r = await api('classGoogleList', { token: adminToken }); cpGoogleFiles = r.recordings || [];
+        X('cp-google-files').innerHTML = cpGoogleFiles.length ? cpGoogleFiles.map(f => `<div class="bg-white border rounded p-2 flex justify-between items-center gap-2"><span>${xe(f.name)} <small>(${f.createdTime ? new Date(f.createdTime).toLocaleDateString() : 'date unavailable'})</small></span><button class="xbtn xbtn-l" onclick="cpAttachRecording('${xe(f.id)}','${xe(f.name)}')">Attach to selected class</button></div>`).join('') : 'No MP4 recordings found in the connected Drive account.';
+      } catch (e) { showToast('Could not list recordings', e.message, true); }
+    }
+    async function cpAttachRecording(fileId, name) {
+      const classId = X('cp-class-select').value;
+      if (!classId) return showToast('Choose a class first', 'Select the class that this recording belongs to.', true);
+      try { await api('classAdminAttachRecording', { token: adminToken, classId, fileId, name }); const r = await api('classAdminList', { token: adminToken }); cpClassesAdmin = r.classes || []; cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); showToast('Recording attached', 'Now grant access to individual students.'); }
+      catch (e) { showToast('Could not attach recording', e.message, true); }
+    }
+    async function cpGrantAccess() {
+      const classId = X('cp-class-select').value, recordingId = X('cp-rec-select').value, studentId = X('cp-student-select').value, maxViews = Number(X('cp-view-limit').value);
+      try { await api('classAdminGrant', { token: adminToken, classId, recordingId, studentId, maxViews }); showToast('Recording access granted', studentId + ' can watch up to ' + maxViews + ' time(s).'); }
+      catch (e) { showToast('Could not grant access', e.message, true); }
+    }
+    async function cpPlayRecording(recordingId) {
+      try {
+        const r = await api('classRecordingPlay', { token: cpToken, recordingId });
+        const holder = X('cp-recordings'), video = document.createElement('video');
+        video.controls = true; video.playsInline = true; video.className = 'w-full rounded-xl mt-3'; video.src = r.url;
+        const prior = holder.querySelector('video'); if (prior) prior.remove();
+        holder.appendChild(video); await video.play().catch(() => {});
+      } catch (e) { showToast('Recording unavailable', e.message, true); }
     }
     async function cpChangeAdminPassword() {
       const newPassword = X('cp-newpass').value;
