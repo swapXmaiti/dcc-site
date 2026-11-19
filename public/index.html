@@ -1021,6 +1021,13 @@
           <button onclick="cpStudentLogin()" class="xbtn xbtn-p w-full">Sign in</button>
           <p id="cp-error" class="text-xs text-rose-600"></p>
           <p class="text-xs text-slate-500">Teachers: use the existing Admin Portal login to manage classes.</p>
+          <details class="border-t pt-3 mt-3 space-y-2">
+            <summary class="font-semibold text-xs cursor-pointer">Owner password recovery</summary>
+            <input id="cp-recovery-key" type="password" class="xin" placeholder="Owner recovery key">
+            <input id="cp-recovery-pass" type="password" class="xin" placeholder="New admin password (at least 12 characters)">
+            <button onclick="cpRecoverAdminPassword()" class="xbtn xbtn-r">Recover admin password</button>
+            <p class="text-xs text-slate-500">Available only if the owner configured DCC_MASTER_RECOVERY_KEY privately in Netlify.</p>
+          </details>
         </div>
         <div id="cp-student" class="hidden p-5 space-y-4">
           <div class="flex justify-between items-center"><div><h3 id="cp-welcome" class="font-bold"></h3><p class="text-xs text-slate-500">Your published classes</p></div><button onclick="cpLogout()" class="xbtn xbtn-l">Log out</button></div>
@@ -1060,13 +1067,7 @@
             <input id="cp-newpass" type="password" class="xin" placeholder="New password (at least 12 characters)">
             <button onclick="cpChangeAdminPassword()" class="xbtn xbtn-g">Change admin password</button>
             <p class="text-xs text-slate-500">All existing admin sessions will be signed out after a successful change.</p>
-            <details class="border-t pt-3 mt-3 space-y-2">
-              <summary class="font-semibold text-xs cursor-pointer">Owner recovery (master key required)</summary>
-              <input id="cp-recovery-key" type="password" class="xin" placeholder="Owner recovery key">
-              <input id="cp-recovery-pass" type="password" class="xin" placeholder="New admin password (at least 12 characters)">
-              <button onclick="cpRecoverAdminPassword()" class="xbtn xbtn-r">Recover admin password</button>
-              <p class="text-xs text-slate-500">Keep the recovery key private. It must be configured as DCC_MASTER_RECOVERY_KEY in Netlify.</p>
-            </details>
+
           </div>
         </div>
       </div>
