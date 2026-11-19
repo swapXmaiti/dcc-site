@@ -2,8 +2,29 @@
 // Data lives in Netlify Blobs. The answer key, student passwords and admission details never leave the server.
 import crypto from "node:crypto";
 
-const adminPassword = () => process.env.ADMIN_PASSWORD || "DM@123";
-const secret = () => process.env.APP_SECRET || crypto.createHash("sha256").update("dcc|" + adminPassword()).digest("hex");
+const adminPassword = () => process.env.ADMIN_PASSWORD || "";
+const secret = () => {
+  if (!process.env.APP_SECRET) throw new Error("APP_SECRET is not configured.");
+  return process.env.APP_SECRET;
+};
+const hashPassword = async password => {
+  const salt = crypto.randomBytes(16).toString("base64url");
+  const derived = await new Promise((resolve, reject) => crypto.scrypt(String(password), salt, 64, (e, key) => e ? reject(e) : resolve(key)));
+  return "scrypt$" + salt + "$" + Buffer.from(derived).toString("base64url");
+};
+const checkPassword = async (password, encoded) => {
+  try {
+    const [kind, salt, expected] = String(encoded).split("$");
+    if (kind !== "scrypt" || !salt || !expected) return false;
+    const actual = await new Promise((resolve, reject) => crypto.scrypt(String(password), salt, 64, (e, key) => e ? reject(e) : resolve(key)));
+    const wanted = Buffer.from(expected, "base64url");
+    return wanted.length === actual.length && crypto.timingSafeEqual(wanted, actual);
+  } catch { return false; }
+};
+const sameSecret = (a, b) => {
+  const x = Buffer.from(String(a || "")), y = Buffer.from(String(b || ""));
+  return x.length > 0 && x.length === y.length && crypto.timingSafeEqual(x, y);
+};
 const mac = body => crypto.createHmac("sha256", secret()).update(body).digest("base64url");
 const sign = (p, hours) => { const body = Buffer.from(JSON.stringify({ ...p, exp: Date.now() + hours * 3600e3 })).toString("base64url"); return body + "." + mac(body); };
 const verify = (t, role) => {
@@ -21,7 +42,10 @@ export function makeApi(store) {
   const J = async (k, d = null) => (await store.get(k, { type: "json" })) ?? d;
   const S = (k, v) => store.setJSON(k, v);
   const keys = async prefix => (await store.list({ prefix })).blobs.map(b => b.key);
-  const admin = b => { if (!verify(b.token, "admin")) throw new Err("Please log in again.", 401); };
+  const admin = async b => {
+    const p = verify(b.token, "admin"), version = await J("auth:version", 0);
+    if (!p || p.cv !== version) throw new Err("Please log in again.", 401);
+  };
   const student = b => { const p = verify(b.token, "student"); if (!p) throw new Err("Session expired. Please log in again.", 401); return p; };
   const metaOf = ex => ({ examId: ex.id, tag: ex.tag, title: ex.title, duration: ex.duration, correct: ex.correct, negative: ex.negative, n: ex.key.length, pages: ex.pdfPages });
   const cleanAns = (ans, n) => { const o = {}; Object.keys(ans || {}).forEach(k => { const i = +k, v = ans[k]; if (Number.isInteger(i) && i >= 0 && i < n && [0, 1, 2, 3].includes(v)) o[i] = v; }); return o; };
@@ -54,20 +78,46 @@ export function makeApi(store) {
   }
 
   const actions = {
-    async adminLogin(b) { if (b.password !== adminPassword()) throw new Err("Incorrect password.", 401); return { token: sign({ role: "admin" }, 12) }; },
+    async adminLogin(b) {
+      const stored = await J("auth:password"), initial = adminPassword();
+      if (!stored && !initial) throw new Err("Admin security is not configured. Set ADMIN_PASSWORD and APP_SECRET in Netlify environment variables.", 503);
+      const ok = stored ? await checkPassword(b.password, stored) : sameSecret(b.password, initial);
+      if (!ok) throw new Err("Incorrect password.", 401);
+      if (!stored) await S("auth:password", await hashPassword(initial));
+      const cv = await J("auth:version", 0);
+      return { token: sign({ role: "admin", cv }, 12) };
+    },
+    async adminChangePassword(b) {
+      await admin(b);
+      const password = String(b.newPassword || "");
+      if (password.length < 12) throw new Err("Use a new password with at least 12 characters.");
+      await S("auth:password", await hashPassword(password));
+      await S("auth:version", (await J("auth:version", 0)) + 1);
+      return { changed: true, reLoginRequired: true };
+    },
+    async adminRecoverPassword(b) {
+      const recoveryKey = process.env.DCC_MASTER_RECOVERY_KEY;
+      if (!recoveryKey) throw new Err("Owner recovery is not configured on the server.", 503);
+      if (!sameSecret(b.recoveryKey, recoveryKey)) throw new Err("Recovery verification failed.", 401);
+      const password = String(b.newPassword || "");
+      if (password.length < 12) throw new Err("Use a new password with at least 12 characters.");
+      await S("auth:password", await hashPassword(password));
+      await S("auth:version", (await J("auth:version", 0)) + 1);
+      return { changed: true, reLoginRequired: true };
+    },
     async adminGet(b) {
-      admin(b); const exams = await J("exams"); await finalizeExpired(exams); await mergeInbox();
+      await admin(b); const exams = await J("exams"); await finalizeExpired(exams); await mergeInbox();
       const results = []; for (const k of await keys("res:")) { const r = await J(k); if (r) results.push(r); }
       return { admissions: await J("admissions"), enquiries: await J("enquiries"), exams, results };
     },
     async adminSet(b) {
-      admin(b);
+      await admin(b);
       for (const [name, value] of Object.entries(b.sets || {})) { if (!["admissions", "enquiries", "exams"].includes(name) || (name === "exams" ? typeof value !== "object" : !Array.isArray(value))) throw new Err("Bad data."); await S(name, value); }
       return {};
     },
-    async adminPutPdf(b) { admin(b); if (typeof b.b64 !== "string" || b.b64.length > 5.6e6 || !b.id) throw new Err("PDF too large (max about 4 MB)."); await store.set("pdf:" + b.id, b.b64); return {}; },
+    async adminPutPdf(b) { await admin(b); if (typeof b.b64 !== "string" || b.b64.length > 5.6e6 || !b.id) throw new Err("PDF too large (max about 4 MB)."); await store.set("pdf:" + b.id, b.b64); return {}; },
     async adminDelResults(b) {
-      admin(b); const id = String(b.examId || "");
+      await admin(b); const id = String(b.examId || "");
       if (b.sid) { await store.delete(`res:${id}:${enc(b.sid)}`); return {}; }
       for (const k of await keys(`res:${id}:`)) await store.delete(k);
       for (const k of await keys("sess:")) { const s = await J(k); if (s && s.examId === id) await store.delete(k); }
