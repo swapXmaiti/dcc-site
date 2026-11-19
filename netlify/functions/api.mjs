@@ -77,6 +77,15 @@ export function makeApi(store) {
     }
   }
 
+
+  const validMeetUrl = value => {
+    try { const u = new URL(String(value || "")); return u.protocol === "https:" && (u.hostname === "meet.google.com" || u.hostname.endsWith(".meet.google.com")); } catch { return false; }
+  };
+  const classList = async () => await J("classes:list", []);
+  const findStudent = async (id, password) => {
+    const sid = String(id || "").trim().toLowerCase(), list = await J("admissions", []);
+    return list.find(a => a.exam_id && String(a.exam_id).toLowerCase() === sid && a.exam_pass === password) || null;
+  };
   const actions = {
     async adminLogin(b) {
       const stored = await J("auth:password"), initial = adminPassword();
@@ -104,6 +113,59 @@ export function makeApi(store) {
       await S("auth:password", await hashPassword(password));
       await S("auth:version", (await J("auth:version", 0)) + 1);
       return { changed: true, reLoginRequired: true };
+    },
+
+    async classAdminList(b) {
+      await admin(b);
+      const admissions = await J("admissions", []);
+      return { classes: await classList(), students: admissions.filter(a => a.exam_id && a.exam_pass).map(a => ({ id: String(a.exam_id), name: String(a.student_name || ""), batch: String(a.class_grade || "") })) };
+    },
+    async classAdminSave(b) {
+      await admin(b);
+      const title = String(b.title || "").trim().slice(0, 120), batch = String(b.batch || "").trim().slice(0, 80);
+      const meetUrl = String(b.meetUrl || "").trim();
+      if (!title || !batch || !validMeetUrl(meetUrl)) throw new Err("Enter a title, batch and valid Google Meet link.");
+      const list = await classList(), id = String(b.id || ("CLS" + Date.now()));
+      const old = list.find(x => x.id === id);
+      const item = { id, title, batch, meetUrl, startsAt: String(b.startsAt || "").slice(0, 40), published: !!b.published, archived: false, recordings: old?.recordings || [], updatedAt: new Date().toISOString() };
+      const next = old ? list.map(x => x.id === id ? item : x) : [item, ...list];
+      await S("classes:list", next); return { classes: next };
+    },
+    async classAdminArchive(b) {
+      await admin(b);
+      const id = String(b.id || ""), list = await classList();
+      await S("classes:list", list.map(x => x.id === id ? { ...x, archived: true, published: false } : x));
+      return {};
+    },
+    async classAdminGrant(b) {
+      await admin(b);
+      const classId = String(b.classId || ""), recordingId = String(b.recordingId || ""), sid = String(b.studentId || "").trim();
+      const maxViews = Math.max(0, Math.min(100, Math.floor(Number(b.maxViews))));
+      if (!classId || !recordingId || !sid || !Number.isFinite(maxViews) || maxViews < 1) throw new Err("Choose a student and set at least one allowed view.");
+      const admissions = await J("admissions", []);
+      if (!admissions.some(a => String(a.exam_id || "").toLowerCase() === sid.toLowerCase() && a.exam_pass)) throw new Err("Student ID not found.");
+      await S("class-access:" + enc(recordingId) + ":" + enc(sid), { classId, recordingId, studentId: sid, maxViews, grantedAt: Date.now() });
+      return {};
+    },
+    async classStudentLogin(b) {
+      const a = await findStudent(b.id, b.password);
+      if (!a) throw new Err("Incorrect Student ID or password.", 401);
+      const token = sign({ role: "classStudent", sid: a.exam_id, name: a.student_name, batch: a.class_grade }, 8);
+      return { token, student: { id: a.exam_id, name: a.student_name, batch: a.class_grade } };
+    },
+    async classStudentData(b) {
+      const p = verify(b.token, "classStudent");
+      if (!p) throw new Err("Session expired. Please log in again.", 401);
+      const classes = (await classList()).filter(c => c.published && !c.archived && String(c.batch).toLowerCase() === String(p.batch || "").toLowerCase());
+      const recordings = [];
+      for (const c of classes) for (const rec of c.recordings || []) {
+        const access = await J("class-access:" + enc(rec.id) + ":" + enc(p.sid));
+        if (access) {
+          const used = await J("class-views:" + enc(rec.id) + ":" + enc(p.sid), 0);
+          recordings.push({ classId: c.id, recordingId: rec.id, title: rec.name, maxViews: access.maxViews, used, remaining: Math.max(0, access.maxViews - used) });
+        }
+      }
+      return { classes: classes.map(c => ({ id: c.id, title: c.title, batch: c.batch, startsAt: c.startsAt, meetUrl: c.meetUrl })), recordings };
     },
     async adminGet(b) {
       await admin(b); const exams = await J("exams"); await finalizeExpired(exams); await mergeInbox();
