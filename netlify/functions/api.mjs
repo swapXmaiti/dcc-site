@@ -213,8 +213,12 @@ export function makeApi(store) {
       const maxViews = Math.max(0, Math.min(100, Math.floor(Number(b.maxViews))));
       if (!classId || !recordingId || !sid || !Number.isFinite(maxViews) || maxViews < 1) throw new Err("Choose a student and set at least one allowed view.");
       const admissions = await J("admissions", []);
-      if (!admissions.some(a => String(a.exam_id || "").toLowerCase() === sid.toLowerCase() && a.exam_pass)) throw new Err("Student ID not found.");
-      await S("class-access:" + enc(recordingId) + ":" + enc(sid), { classId, recordingId, studentId: sid, maxViews, grantedAt: Date.now() });
+      const studentRecord = admissions.find(a => String(a.exam_id || "").toLowerCase() === sid.toLowerCase() && a.exam_pass);
+      const targetClass = (await classList()).find(c => c.id === classId && (c.recordings || []).some(r => r.id === recordingId));
+      if (!studentRecord) throw new Err("Student ID not found.");
+      if (!targetClass) throw new Err("That recording is not attached to the selected class.");
+      const canonicalSid = String(studentRecord.exam_id);
+      await S("class-access:" + enc(recordingId) + ":" + enc(canonicalSid), { classId, recordingId, studentId: canonicalSid, maxViews, grantedAt: Date.now() });
       return {};
     },
     async classStudentLogin(b) {
