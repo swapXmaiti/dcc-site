@@ -87,7 +87,8 @@ Implemented on `website-upgrade`:
 
 Still required before this can be considered production-ready:
 - [ ] Configure Netlify environment variables and Google Cloud OAuth/Drive API; the account's recording eligibility must be confirmed by the teacher in Google Meet.
-- [ ] Run automated syntax, API, authorization, playback-range, concurrency, and browser tests on a staging deploy. No staging test has been run from this branch yet.
+- [x] Static JavaScript syntax parsing completed for the backend module and all inline frontend scripts.
+- [ ] Run API, authorization, OAuth callback, playback-range, concurrency, and browser tests on a staging deploy. No staging integration test has been run from this branch yet.
 - [ ] Review the recording view-limit implementation under concurrent requests; Blobs do not provide a transactional counter, so strict anti-abuse guarantees are not claimed.
 - [ ] Back up and verify production Blobs before deployment; no admission records have been intentionally rewritten by these additions.
 - [ ] Confirm OAuth consent-screen verification requirements for the restricted Drive scope.
