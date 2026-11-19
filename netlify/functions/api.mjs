@@ -82,6 +82,27 @@ export function makeApi(store) {
     try { const u = new URL(String(value || "")); return u.protocol === "https:" && (u.hostname === "meet.google.com" || u.hostname.endsWith(".meet.google.com")); } catch { return false; }
   };
   const classList = async () => await J("classes:list", []);
+  const encryptSecret = value => {
+    const key = crypto.createHash("sha256").update(secret()).digest(), iv = crypto.randomBytes(12);
+    const cipher = crypto.createCipheriv("aes-256-gcm", key, iv), data = Buffer.concat([cipher.update(String(value), "utf8"), cipher.final()]);
+    return [iv.toString("base64url"), cipher.getAuthTag().toString("base64url"), data.toString("base64url")].join(".");
+  };
+  const decryptSecret = value => {
+    const [iv, tag, data] = String(value || "").split(".");
+    const key = crypto.createHash("sha256").update(secret()).digest(), decipher = crypto.createDecipheriv("aes-256-gcm", key, Buffer.from(iv, "base64url"));
+    decipher.setAuthTag(Buffer.from(tag, "base64url"));
+    return Buffer.concat([decipher.update(Buffer.from(data, "base64url")), decipher.final()]).toString("utf8");
+  };
+  async function googleAccessToken() {
+    const encrypted = await J("google:refresh");
+    if (!encrypted) throw new Err("Connect the teacher's Google account first.", 503);
+    const refresh_token = decryptSecret(encrypted);
+    const response = await fetch("https://oauth2.googleapis.com/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ client_id: process.env.GOOGLE_CLIENT_ID || "", client_secret: process.env.GOOGLE_CLIENT_SECRET || "", refresh_token, grant_type: "refresh_token" }) });
+    const data = await response.json();
+    if (!response.ok || !data.access_token) throw new Err("Google connection expired or could not be refreshed.", 502);
+    return data.access_token;
+  }
+
   const findStudent = async (id, password) => {
     const sid = String(id || "").trim().toLowerCase(), list = await J("admissions", []);
     return list.find(a => a.exam_id && String(a.exam_id).toLowerCase() === sid && a.exam_pass === password) || null;
@@ -115,6 +136,48 @@ export function makeApi(store) {
       return { changed: true, reLoginRequired: true };
     },
 
+
+    async adminGoogleStart(b) {
+      await admin(b);
+      const { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } = process.env;
+      if (!GOOGLE_CLIENT_ID || !GOOGLE_REDIRECT_URI || !process.env.GOOGLE_CLIENT_SECRET) throw new Err("Google OAuth is not configured in Netlify yet.", 503);
+      const state = sign({ role: "googleOAuth", nonce: crypto.randomBytes(16).toString("hex") }, 0.25);
+      const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+      url.search = new URLSearchParams({ client_id: GOOGLE_CLIENT_ID, redirect_uri: GOOGLE_REDIRECT_URI, response_type: "code", scope: "https://www.googleapis.com/auth/drive.readonly", access_type: "offline", prompt: "consent", state }).toString();
+      return { url: url.toString() };
+    },
+    async classGoogleList(b) {
+      await admin(b);
+      const token = await googleAccessToken();
+      const q = "trashed=false and mimeType='video/mp4'";
+      const url = "https://www.googleapis.com/drive/v3/files?" + new URLSearchParams({ q, pageSize: "100", orderBy: "createdTime desc", fields: "files(id,name,mimeType,createdTime,size)" });
+      const response = await fetch(url, { headers: { authorization: "Bearer " + token } }), data = await response.json();
+      if (!response.ok) throw new Err("Google Drive could not list recordings. Check the Drive API and OAuth permissions.", 502);
+      return { recordings: data.files || [] };
+    },
+    async classAdminAttachRecording(b) {
+      await admin(b);
+      const classId = String(b.classId || ""), fileId = String(b.fileId || ""), name = String(b.name || "Meet recording").slice(0, 160);
+      const list = await classList(), item = list.find(x => x.id === classId);
+      if (!item || !fileId) throw new Err("Choose a class and a Drive recording.");
+      const token = await googleAccessToken();
+      const r = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "?fields=id,name,mimeType", { headers: { authorization: "Bearer " + token } });
+      const file = await r.json();
+      if (!r.ok || !file.id || !String(file.mimeType || "").startsWith("video/")) throw new Err("That Drive file is not an accessible video recording.");
+      const recordings = [...(item.recordings || []).filter(x => x.id !== file.id), { id: file.id, name: file.name || name }];
+      await S("classes:list", list.map(x => x.id === classId ? { ...x, recordings } : x));
+      return {};
+    },
+    async classRecordingPlay(b) {
+      const p = verify(b.token, "classStudent");
+      if (!p) throw new Err("Please sign in again.", 401);
+      const id = String(b.recordingId || ""), access = await J("class-access:" + enc(id) + ":" + enc(p.sid));
+      if (!access) throw new Err("Your teacher has not granted access to this recording.", 403);
+      const used = await J("class-views:" + enc(id) + ":" + enc(p.sid), 0);
+      if (used >= access.maxViews) throw new Err("You have used all allowed views.", 403);
+      const token = sign({ role: "classPlay", sid: p.sid, fileId: id }, 1 / 12);
+      return { url: (process.env.URL || "") + "/.netlify/functions/api?play=" + encodeURIComponent(token) };
+    },
     async classAdminList(b) {
       await admin(b);
       const admissions = await J("admissions", []);
@@ -266,6 +329,34 @@ export function makeApi(store) {
 
   return async function handle(req) {
     const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
+    if (req.method === "GET") {
+      const url = new URL(req.url);
+      if (url.searchParams.has("code") && url.searchParams.has("state")) {
+        const state = verify(url.searchParams.get("state"), "googleOAuth");
+        if (!state || !url.searchParams.get("code")) return new Response("Google connection failed: invalid OAuth state.", { status: 400 });
+        try {
+          const response = await fetch("https://oauth2.googleapis.com/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ code: url.searchParams.get("code"), client_id: process.env.GOOGLE_CLIENT_ID || "", client_secret: process.env.GOOGLE_CLIENT_SECRET || "", redirect_uri: process.env.GOOGLE_REDIRECT_URI || "", grant_type: "authorization_code" }) });
+          const data = await response.json();
+          if (!response.ok || !data.refresh_token) return new Response("Google did not return a refresh token. Reconnect and approve Drive access.", { status: 400 });
+          await S("google:refresh", encryptSecret(data.refresh_token));
+          return new Response("<h2>Google Drive connected.</h2><p>You can close this tab and return to the Class Portal.</p>", { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+        } catch { return new Response("Could not securely save the Google connection.", { status: 500 }); }
+      }
+      const play = url.searchParams.get("play");
+      if (play) {
+        const p = verify(play, "classPlay");
+        if (!p) return json({ error: "Playback link expired. Request a new one." }, 401);
+        const access = await J("class-access:" + enc(p.fileId) + ":" + enc(p.sid));
+        const used = await J("class-views:" + enc(p.fileId) + ":" + enc(p.sid), 0);
+        if (!access || used >= access.maxViews) return json({ error: "No recording views remain." }, 403);
+        const token = await googleAccessToken();
+        const upstream = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(p.fileId) + "?alt=media", { headers: { authorization: "Bearer " + token } });
+        if (!upstream.ok) return json({ error: "Google Drive could not stream this recording." }, 502);
+        await S("class-views:" + enc(p.fileId) + ":" + enc(p.sid), used + 1);
+        return new Response(upstream.body, { headers: { "content-type": upstream.headers.get("content-type") || "video/mp4", "cache-control": "private, no-store", "content-disposition": "inline" } });
+      }
+      return json({ error: "Unknown GET action." }, 404);
+    }
     if (req.method !== "POST") return json({ error: "POST only" }, 405);
     try {
       const b = await req.json(), fn = actions[b.action]; if (!fn) throw new Err("Unknown action.");
