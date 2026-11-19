@@ -72,15 +72,44 @@ Required Google Cloud setup: OAuth consent screen, OAuth web client, authorised 
 6. Review the branch diff and preview with the site owner.
 7. Merge/deploy only after explicit owner approval.
 
-## Current implementation status
+## Current implementation status (branch preview only)
 
-- [x] Existing backend and data model inspected.
-- [x] Confirmed existing student credentials live in admission records.
-- [x] Confirmed question PDFs are already stored in shared Netlify Blobs (not just the uploading browser).
-- [x] Recorded a non-destructive upgrade plan on the isolated branch.
-- [ ] Implement shared admin password rotation and owner recovery.
-- [ ] Implement Class Portal UI and namespaced backend records.
-- [ ] Implement Google OAuth and Meet recording discovery.
-- [ ] Implement per-student recording permissions and controlled playback.
-- [ ] Add exam integrity warnings/logging and paper download UX.
-- [ ] Test on staging and obtain approval before production deployment.
+Implemented on `website-upgrade`:
+- [x] Shared admin password change and owner recovery API, salted scrypt password hash, credential-version invalidation.
+- [x] Class Portal homepage entry and modal.
+- [x] Class admin can create/publish/archive classes with Google Meet links.
+- [x] Class student login reuses existing Student ID/password fields from admissions; class records use separate `classes:list` storage.
+- [x] Google OAuth connect flow and encrypted server-side refresh-token storage.
+- [x] Google Drive video discovery; teacher explicitly attaches a chosen video to a class.
+- [x] Per-student recording grant/revoke and view-limit checks; playback is proxied through the function, not exposed as a public Drive link.
+- [x] Exam tab-visibility/fullscreen deterrents and server-side warning records.
+- [x] Authenticated exam question PDF download.
+
+Still required before this can be considered production-ready:
+- [ ] Configure Netlify environment variables and Google Cloud OAuth/Drive API; the account's recording eligibility must be confirmed by the teacher in Google Meet.
+- [ ] Run automated syntax, API, authorization, playback-range, concurrency, and browser tests on a staging deploy. No staging test has been run from this branch yet.
+- [ ] Review the recording view-limit implementation under concurrent requests; Blobs do not provide a transactional counter, so strict anti-abuse guarantees are not claimed.
+- [ ] Back up and verify production Blobs before deployment; no admission records have been intentionally rewritten by these additions.
+- [ ] Confirm OAuth consent-screen verification requirements for the restricted Drive scope.
+- [ ] Review branch diff and approve merge/deployment.
+
+## Required Netlify environment variables
+
+Required for backend authentication:
+- `ADMIN_PASSWORD`: strong initial shared admin password (12+ characters).
+- `APP_SECRET`: long random secret used for session signing and encryption.
+- `DCC_MASTER_RECOVERY_KEY`: private owner recovery key. If the owner wants to retain `DM@123`, set this value privately in Netlify; do not commit it.
+
+Required for Google Drive integration:
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `GOOGLE_REDIRECT_URI`: exactly `https://YOUR-SITE/.netlify/functions/api` (replace with the deployed site's domain; configure the same URI in Google Cloud Console).
+
+Enable the Google Drive API and configure an OAuth web client. The `drive.readonly` scope is restricted; Google may require OAuth app verification and a security assessment. Meet recording itself remains dependent on Google's subscription eligibility and host-side recording controls. The portal cannot force an ineligible account to record.
+
+## Honest technical limits
+
+- Browser code cannot block operating-system screenshots, external screen recording, browser extensions or filming another display. Exam focus detection is a deterrent, not a guarantee.
+- A recording is discoverable only after Google Meet has actually created it in the connected Drive account.
+- Per-student playback permissions and view counters are server-checked, but concurrent playback requests can race because Netlify Blobs is not a transactional counter. Do not describe the counter as tamper-proof.
+- This branch has not been deployed or tested against production data. Do not merge or deploy until the release gates above are complete.
