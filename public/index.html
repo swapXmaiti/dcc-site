@@ -125,6 +125,9 @@
                     <button onclick="openExamPortal()" class="px-3.5 py-2 text-xs font-bold text-white bg-brand-700 hover:bg-brand-600 rounded-lg flex items-center gap-1.5 transition">
                         <i data-lucide="clipboard-list" class="w-4 h-4"></i> <span class="hidden sm:inline">Exam Portal</span>
                     </button>
+                    <button onclick="openClassPortal()" class="px-3.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg flex items-center gap-1.5 transition">
+                        <i data-lucide="video" class="w-4 h-4"></i> <span class="hidden sm:inline">Class Portal</span>
+                    </button>
                     <button onclick="openAdminModal()" class="px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-lg flex items-center gap-1.5 transition border border-slate-200">
                         <i data-lucide="shield-check" class="w-4 h-4 text-brand-700"></i> <span class="hidden sm:inline">Admin Portal</span>
                     </button>
@@ -1002,6 +1005,53 @@
         </div>
     </div>
 
+
+    <!-- Class Portal: isolated from admission records -->
+    <div id="class-modal" class="fixed inset-0 z-[60] hidden bg-slate-950/70 backdrop-blur-sm overflow-y-auto p-3 sm:p-6">
+      <div class="max-w-5xl mx-auto my-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-brand-navy text-white px-5 py-4 flex items-center justify-between">
+          <div><h2 class="font-bold text-lg">Class Portal</h2><p class="text-xs text-slate-300">Live classes and authorised recordings</p></div>
+          <button onclick="closeClassPortal()" aria-label="Close" class="p-2 text-slate-300 hover:text-white"><i data-lucide="x"></i></button>
+        </header>
+        <div id="cp-login" class="p-6 max-w-md mx-auto space-y-3">
+          <h3 class="font-bold text-slate-900">Student login</h3>
+          <p class="text-xs text-slate-500">Use the Student ID and password already provided by your teacher.</p>
+          <input id="cp-id" class="xin" placeholder="Student ID" autocomplete="username">
+          <input id="cp-password" class="xin" type="password" placeholder="Password" autocomplete="current-password">
+          <button onclick="cpStudentLogin()" class="xbtn xbtn-p w-full">Sign in</button>
+          <p id="cp-error" class="text-xs text-rose-600"></p>
+          <p class="text-xs text-slate-500">Teachers: use the existing Admin Portal login to manage classes.</p>
+        </div>
+        <div id="cp-student" class="hidden p-5 space-y-4">
+          <div class="flex justify-between items-center"><div><h3 id="cp-welcome" class="font-bold"></h3><p class="text-xs text-slate-500">Your published classes</p></div><button onclick="cpLogout()" class="xbtn xbtn-l">Log out</button></div>
+          <div id="cp-classes" class="grid md:grid-cols-2 gap-3"></div>
+          <h4 class="font-bold text-slate-900">Recordings available to you</h4><div id="cp-recordings" class="text-sm text-slate-600"></div>
+          <p class="text-xs text-slate-500">Recordings appear only after the teacher has connected an eligible Google account, matched a Meet recording and granted you access. Browser controls cannot guarantee prevention of screenshots or screen recording.</p>
+        </div>
+        <div id="cp-admin" class="hidden p-5 space-y-4">
+          <div class="flex items-center justify-between"><h3 class="font-bold">Teacher class management</h3><button onclick="closeClassPortal()" class="xbtn xbtn-l">Close</button></div>
+          <div class="grid md:grid-cols-2 gap-3">
+            <input id="cp-title" class="xin" placeholder="Class title">
+            <input id="cp-batch" class="xin" placeholder="Batch / class (must match admission class)">
+            <input id="cp-start" class="xin" type="datetime-local">
+            <input id="cp-meet" class="xin" type="url" placeholder="Google Meet link (https://meet.google.com/...)">
+          </div>
+          <label class="flex gap-2 items-center text-sm"><input id="cp-publish" type="checkbox"> Publish for matching students</label>
+          <button onclick="cpSaveClass()" class="xbtn xbtn-p">Save class</button>
+          <div id="cp-admin-list" class="space-y-2"></div>
+          <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">
+            **Google Meet recording connection:** not connected yet. This portal will not pretend a recording exists. Recording discovery and playback require Google OAuth configuration, an eligible Meet plan and Drive API consent. Once connected, teachers can match recordings and set per-student view limits.
+          </div>
+          <div class="border-t pt-4 space-y-2">
+            <h4 class="font-bold">Change shared admin password</h4>
+            <input id="cp-newpass" type="password" class="xin" placeholder="New password (at least 12 characters)">
+            <button onclick="cpChangeAdminPassword()" class="xbtn xbtn-g">Change admin password</button>
+            <p class="text-xs text-slate-500">All existing admin sessions will be signed out after a successful change.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ================= CBT EXAM PORTAL ================= -->
     <div id="exam-modal" class="fixed inset-0 z-50 hidden bg-slate-100 overflow-y-auto">
 
@@ -1585,6 +1635,53 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
+
+    // ---------- Class Portal ----------
+    let cpToken = '', cpIsAdmin = false;
+    function openClassPortal() {
+      X('class-modal').classList.remove('hidden');
+      X('cp-login').classList.remove('hidden'); X('cp-student').classList.add('hidden'); X('cp-admin').classList.add('hidden');
+      if (adminToken) cpTryAdmin();
+    }
+    function closeClassPortal() { X('class-modal').classList.add('hidden'); }
+    async function cpTryAdmin() {
+      try { const r = await api('classAdminList', { token: adminToken }); cpIsAdmin = true; X('cp-login').classList.add('hidden'); X('cp-admin').classList.remove('hidden'); cpRenderAdmin(r.classes || []); }
+      catch (_) { /* Admin can sign in from the existing Admin Portal. */ }
+    }
+    async function cpStudentLogin() {
+      X('cp-error').textContent = '';
+      try {
+        const r = await api('classStudentLogin', { id: X('cp-id').value, password: X('cp-password').value });
+        cpToken = r.token; X('cp-login').classList.add('hidden'); X('cp-student').classList.remove('hidden');
+        X('cp-welcome').textContent = 'Welcome, ' + r.student.name;
+        await cpLoadStudent();
+      } catch (e) { X('cp-error').textContent = e.message; }
+    }
+    async function cpLoadStudent() {
+      const r = await api('classStudentData', { token: cpToken });
+      X('cp-classes').innerHTML = r.classes.length ? r.classes.map(c => `<article class="border rounded-xl p-4"><h4 class="font-bold">${xe(c.title)}</h4><p class="text-xs text-slate-500">${xe(c.batch)} · ${xe(c.startsAt || 'Time to be announced')}</p><a class="inline-block mt-3 text-sm font-semibold text-teal-700 underline" target="_blank" rel="noopener" href="${xe(c.meetUrl)}">Join Google Meet</a></article>`).join('') : '<p class="text-sm text-slate-500">No published classes for your batch yet.</p>';
+      X('cp-recordings').textContent = r.recordings.length ? r.recordings.map(v => v.title + ': ' + v.remaining + ' view(s) remaining').join(' · ') : 'No recordings have been authorised for your account yet.';
+    }
+    async function cpLogout() { cpToken = ''; X('cp-password').value = ''; X('cp-student').classList.add('hidden'); X('cp-login').classList.remove('hidden'); }
+    async function cpSaveClass() {
+      try {
+        const r = await api('classAdminSave', { token: adminToken, title: X('cp-title').value, batch: X('cp-batch').value, startsAt: X('cp-start').value, meetUrl: X('cp-meet').value, published: X('cp-publish').checked });
+        cpRenderAdmin(r.classes || []); showToast('Class saved', 'The class is stored separately from admissions.');
+      } catch (e) { showToast('Could not save class', e.message, true); }
+    }
+    function cpRenderAdmin(list) {
+      X('cp-admin-list').innerHTML = list.length ? list.map(c => `<div class="border rounded-lg p-3 flex justify-between gap-3 items-center"><div><b>${xe(c.title)}</b><p class="text-xs text-slate-500">${xe(c.batch)} · ${c.published ? 'Published' : 'Draft'} · ${c.archived ? 'Archived' : 'Active'}</p></div><button class="xbtn xbtn-l" onclick="cpArchiveClass('${xe(c.id)}')">Archive</button></div>`).join('') : '<p class="text-xs text-slate-500">No classes created yet.</p>';
+    }
+    async function cpArchiveClass(id) {
+      try { await api('classAdminArchive', { token: adminToken, id }); const r = await api('classAdminList', { token: adminToken }); cpRenderAdmin(r.classes || []); }
+      catch (e) { showToast('Could not archive class', e.message, true); }
+    }
+    async function cpChangeAdminPassword() {
+      const newPassword = X('cp-newpass').value;
+      try { await api('adminChangePassword', { token: adminToken, newPassword }); adminToken = ''; sessionStorage.removeItem('dcc_admin_token'); X('cp-newpass').value = ''; closeClassPortal(); showToast('Password changed', 'Log in again with the new shared admin password.'); }
+      catch (e) { showToast('Password not changed', e.message, true); }
+    }
+
     // ================= CBT EXAM PORTAL =================
     // ---------- Shared server (Netlify Function) ----------
     const API = '/.netlify/functions/api';
