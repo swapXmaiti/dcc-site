@@ -175,7 +175,7 @@ export function makeApi(store) {
       if (!access) throw new Err("Your teacher has not granted access to this recording.", 403);
       const used = await J("class-views:" + enc(id) + ":" + enc(p.sid), 0);
       if (used >= access.maxViews) throw new Err("You have used all allowed views.", 403);
-      const token = sign({ role: "classPlay", sid: p.sid, fileId: id }, 1 / 12);
+      const token = sign({ role: "classPlay", sid: p.sid, fileId: id, playId: crypto.randomBytes(16).toString("hex") }, 1 / 12);
       return { url: (process.env.URL || "") + "/.netlify/functions/api?play=" + encodeURIComponent(token) };
     },
     async classAdminList(b) {
@@ -348,12 +348,16 @@ export function makeApi(store) {
         if (!p) return json({ error: "Playback link expired. Request a new one." }, 401);
         const access = await J("class-access:" + enc(p.fileId) + ":" + enc(p.sid));
         const used = await J("class-views:" + enc(p.fileId) + ":" + enc(p.sid), 0);
-        if (!access || used >= access.maxViews) return json({ error: "No recording views remain." }, 403);
-        const token = await googleAccessToken();
-        const upstream = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(p.fileId) + "?alt=media", { headers: { authorization: "Bearer " + token } });
+        const playKey = "class-play-used:" + p.playId, alreadyCounted = await J(playKey, false);
+        if (!access || (!alreadyCounted && used >= access.maxViews)) return json({ error: "No recording views remain." }, 403);
+        const token = await googleAccessToken(), headers = { authorization: "Bearer " + token };
+        const range = req.headers.get("range"); if (range) headers.range = range;
+        const upstream = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(p.fileId) + "?alt=media", { headers });
         if (!upstream.ok) return json({ error: "Google Drive could not stream this recording." }, 502);
-        await S("class-views:" + enc(p.fileId) + ":" + enc(p.sid), used + 1);
-        return new Response(upstream.body, { headers: { "content-type": upstream.headers.get("content-type") || "video/mp4", "cache-control": "private, no-store", "content-disposition": "inline" } });
+        if (!alreadyCounted) { await S(playKey, true); await S("class-views:" + enc(p.fileId) + ":" + enc(p.sid), used + 1); }
+        const outHeaders = { "content-type": upstream.headers.get("content-type") || "video/mp4", "cache-control": "private, no-store", "content-disposition": "inline", "accept-ranges": upstream.headers.get("accept-ranges") || "bytes" };
+        for (const key of ["content-length", "content-range"]) if (upstream.headers.get(key)) outHeaders[key] = upstream.headers.get(key);
+        return new Response(upstream.body, { status: upstream.status, headers: outHeaders });
       }
       return json({ error: "Unknown GET action." }, 404);
     }
