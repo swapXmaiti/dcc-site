@@ -236,6 +236,15 @@ export function makeApi(store) {
       }
       return { remaining: sess.end - Date.now(), ans: sess.ans };
     },
+    async studentFlag(b) {
+      const p = student(b);
+      const reason = String(b.reason || "").slice(0, 40);
+      if (!["tab-hidden", "fullscreen-exit"].includes(reason)) throw new Err("Invalid integrity event.");
+      const key = "exam-flags:" + enc(p.sid), events = await J(key, []);
+      events.push({ reason, at: Date.now() });
+      await S(key, events.slice(-100));
+      return { recorded: true };
+    },
     async studentSave(b) {
       const p = student(b), sess = await J(`sess:${enc(p.sid)}`); if (!sess) throw new Err("No active test.");
       if (Date.now() > sess.end + GRACE) return { expired: true };
