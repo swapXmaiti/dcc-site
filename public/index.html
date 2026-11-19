@@ -1706,7 +1706,7 @@
       X('cp-rec-select').innerHTML = '<option value="">Choose attached recording</option>' + recordings.map(r => `<option value="${xe(r.id)}">${xe(r.name)} · ${xe(r.classId)}</option>`).join('');
     }
     async function cpConnectGoogle() {
-      try { const r = await api('adminGoogleStart', { token: adminToken }); window.open(r.url, '_blank', 'noopener'); }
+      try { const r = await api('adminGoogleStart', { token: adminToken }); window.location.href = r.url; }
       catch (e) { showToast('Google connection unavailable', e.message, true); }
     }
     async function cpLoadGoogle() {
