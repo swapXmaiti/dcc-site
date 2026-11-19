@@ -200,6 +200,13 @@ export function makeApi(store) {
       await S("classes:list", list.map(x => x.id === id ? { ...x, archived: true, published: false } : x));
       return {};
     },
+    async classAdminRevoke(b) {
+      await admin(b);
+      const recordingId = String(b.recordingId || ""), sid = String(b.studentId || "");
+      if (!recordingId || !sid) throw new Err("Choose a recording and student.");
+      await store.delete("class-access:" + enc(recordingId) + ":" + enc(sid));
+      return {};
+    },
     async classAdminGrant(b) {
       await admin(b);
       const classId = String(b.classId || ""), recordingId = String(b.recordingId || ""), sid = String(b.studentId || "").trim();
