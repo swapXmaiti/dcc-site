@@ -1186,6 +1186,7 @@
                     <button onclick="xsSubmit(false)" class="xbtn xbtn-g">Submit Test</button>
                 </div>
             </header>
+            <div id="exam-integrity-note" class="hidden bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-2 text-xs">Exam integrity notice: keep this tab active and remain in fullscreen. Tab changes and fullscreen exits may be recorded. Screenshots cannot be reliably blocked by a website.</div>
             <div class="flex-1 min-h-0 flex flex-col lg:flex-row">
                 <main id="t-pdf" class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 bg-slate-200"></main>
                 <aside class="lg:w-80 h-[42vh] lg:h-auto bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col shrink-0">
@@ -1995,6 +1996,23 @@
     }
 
     // ---------- Student: test ----------
+
+    let examFocusWarnings = 0, examFocusLast = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (xSess && document.hidden) {
+        examFocusWarnings++;
+        if (Date.now() - examFocusLast > 1500) { examFocusLast = Date.now(); api('studentFlag', { token: studentToken, reason: 'tab-hidden' }).catch(() => {}); }
+        showToast('Exam focus warning', 'Switching tabs is discouraged and may be recorded.', true);
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      if (xSess && !document.fullscreenElement) {
+        api('studentFlag', { token: studentToken, reason: 'fullscreen-exit' }).catch(() => {});
+        showToast('Fullscreen exited', 'Please return to fullscreen to continue your exam.', true);
+      }
+    });
+    document.addEventListener('contextmenu', e => { if (xSess) e.preventDefault(); });
+
     function xsRun() {
         X('t-title').textContent = exam.title + ' (' + xTag + ')'; X('t-student').textContent = xStudent.student_name + ' (' + xStudent.exam_id + ')';
         showExamView('test'); xsBuildSheet(); xsTick(); if (!xSess) return;
