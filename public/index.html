@@ -1050,6 +1050,7 @@
             <select id="cp-class-select" class="xin"><option value="">Choose class</option></select>
             <select id="cp-rec-select" class="xin"><option value="">Choose attached recording</option></select>
             <button onclick="cpGrantAccess()" class="xbtn xbtn-g">Grant access</button>
+            <button onclick="cpRevokeAccess()" class="xbtn xbtn-r">Revoke access</button>
             <select id="cp-student-select" class="xin"><option value="">Choose student</option></select>
             <input id="cp-view-limit" type="number" min="1" max="100" value="2" class="xin" placeholder="Allowed views">
             <p class="text-xs text-slate-500">Access is checked on the server. Never share Drive files publicly. Each authorised playback session uses one view.</p>
@@ -1059,6 +1060,13 @@
             <input id="cp-newpass" type="password" class="xin" placeholder="New password (at least 12 characters)">
             <button onclick="cpChangeAdminPassword()" class="xbtn xbtn-g">Change admin password</button>
             <p class="text-xs text-slate-500">All existing admin sessions will be signed out after a successful change.</p>
+            <details class="border-t pt-3 mt-3 space-y-2">
+              <summary class="font-semibold text-xs cursor-pointer">Owner recovery (master key required)</summary>
+              <input id="cp-recovery-key" type="password" class="xin" placeholder="Owner recovery key">
+              <input id="cp-recovery-pass" type="password" class="xin" placeholder="New admin password (at least 12 characters)">
+              <button onclick="cpRecoverAdminPassword()" class="xbtn xbtn-r">Recover admin password</button>
+              <p class="text-xs text-slate-500">Keep the recovery key private. It must be configured as DCC_MASTER_RECOVERY_KEY in Netlify.</p>
+            </details>
           </div>
         </div>
       </div>
@@ -1726,6 +1734,17 @@
         holder.appendChild(video); await video.play().catch(() => {});
       } catch (e) { showToast('Recording unavailable', e.message, true); }
     }
+
+    async function cpRevokeAccess() {
+      const recordingId = X('cp-rec-select').value, studentId = X('cp-student-select').value;
+      try { await api('classAdminRevoke', { token: adminToken, recordingId, studentId }); showToast('Access revoked', 'This student can no longer open this recording.'); }
+      catch (e) { showToast('Could not revoke access', e.message, true); }
+    }
+    async function cpRecoverAdminPassword() {
+      const recoveryKey = X('cp-recovery-key').value, newPassword = X('cp-recovery-pass').value;
+      try { await api('adminRecoverPassword', { recoveryKey, newPassword }); adminToken = ''; sessionStorage.removeItem('dcc_admin_token'); closeClassPortal(); showToast('Admin password recovered', 'Log in again using the new password.'); }
+      catch (e) { showToast('Recovery failed', e.message, true); }
+    }
     async function cpChangeAdminPassword() {
       const newPassword = X('cp-newpass').value;
       try { await api('adminChangePassword', { token: adminToken, newPassword }); adminToken = ''; sessionStorage.removeItem('dcc_admin_token'); X('cp-newpass').value = ''; closeClassPortal(); showToast('Password changed', 'Log in again with the new shared admin password.'); }
@@ -2064,6 +2083,8 @@
 
     function xsRun() {
         X('t-title').textContent = exam.title + ' (' + xTag + ')'; X('t-student').textContent = xStudent.student_name + ' (' + xStudent.exam_id + ')';
+        if (document.fullscreenEnabled && !document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+        X('exam-integrity-note')?.classList.remove('hidden');
         showExamView('test'); xsBuildSheet(); xsTick(); if (!xSess) return;
         clearInterval(xTimer); xTimer = setInterval(xsTick, 1000); xsShowPdf();
     }
