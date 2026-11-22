@@ -169,5 +169,6 @@ export function makeApi(store) {
 
 export default async (req) => {
   const { getStore } = await import("@netlify/blobs");
-  return makeApi(getStore({ name: "dcc", consistency: "strong" }))(req);
+  const storeName = process.env.CONTEXT === "production" ? "dcc" : "dcc-staging";
+  return makeApi(getStore({ name: storeName, consistency: "strong" }))(req);
 };
