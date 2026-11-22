@@ -394,7 +394,13 @@ export function makeApi(store) {
   };
 }
 
-export default async (req) => {
-  const { getStore } = await import("@netlify/blobs");
-  return makeApi(getStore({ name: "dcc", consistency: "strong" }))(req);
+export default async (req, context) => {
+  const { getStore, getDeployStore } = await import("@netlify/blobs");
+  // Production keeps the existing site-wide store so all admission and exam data remain intact.
+  // Every non-production deploy gets an isolated deploy-scoped store; previews must never read/write production Blobs.
+  const isProduction = context?.deploy?.context === "production";
+  const store = isProduction
+    ? getStore({ name: "dcc", consistency: "strong" })
+    : getDeployStore({ name: "dcc", consistency: "strong" });
+  return makeApi(store)(req);
 };
