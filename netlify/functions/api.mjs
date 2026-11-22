@@ -2,8 +2,15 @@
 // Data lives in Netlify Blobs. The answer key, student passwords and admission details never leave the server.
 import crypto from "node:crypto";
 
-const adminPassword = () => process.env.ADMIN_PASSWORD || "DM@123";
-const secret = () => process.env.APP_SECRET || crypto.createHash("sha256").update("dcc|" + adminPassword()).digest("hex");
+const legacyAdminPassword = () => process.env.ADMIN_PASSWORD || "";
+const passwordHash = (password, salt) => crypto.scryptSync(password, salt, 64).toString("hex");
+const safeEqual = (a, b) => { const x = Buffer.from(String(a)), y = Buffer.from(String(b)); return x.length === y.length && crypto.timingSafeEqual(x, y); };
+async function adminPasswordMatches(store, candidate) {
+  const saved = await store.get("admin:password", { type: "json" });
+  if (saved?.salt && saved?.hash) return safeEqual(passwordHash(String(candidate || ""), saved.salt), saved.hash);
+  return !!legacyAdminPassword() && !!candidate && safeEqual(String(candidate), legacyAdminPassword());
+}
+const secret = () => process.env.APP_SECRET || crypto.createHash("sha256").update("dcc|" + legacyAdminPassword()).digest("hex");
 const mac = body => crypto.createHmac("sha256", secret()).update(body).digest("base64url");
 const sign = (p, hours) => { const body = Buffer.from(JSON.stringify({ ...p, exp: Date.now() + hours * 3600e3 })).toString("base64url"); return body + "." + mac(body); };
 const verify = (t, role) => {
@@ -54,7 +61,16 @@ export function makeApi(store) {
   }
 
   const actions = {
-    async adminLogin(b) { if (b.password !== adminPassword()) throw new Err("Incorrect password.", 401); return { token: sign({ role: "admin" }, 12) }; },
+    async adminLogin(b) { if (!(await adminPasswordMatches(store, b.password)) && !(process.env.ADMIN_RECOVERY_KEY && safeEqual(String(b.password || ""), process.env.ADMIN_RECOVERY_KEY))) throw new Err("Incorrect password.", 401); return { token: sign({ role: "admin" }, 12) }; },
+    async adminChangePassword(b) {
+      admin(b);
+      if (!(await adminPasswordMatches(store, b.currentPassword)) && !(process.env.ADMIN_RECOVERY_KEY && safeEqual(String(b.currentPassword || ""), process.env.ADMIN_RECOVERY_KEY))) throw new Err("Current password or recovery key is incorrect.", 401);
+      const next = String(b.newPassword || "");
+      if (next.length < 10 || next.length > 128) throw new Err("New password must be 10–128 characters.");
+      const salt = crypto.randomBytes(16).toString("hex");
+      await S("admin:password", { salt, hash: passwordHash(next, salt), updatedAt: new Date().toISOString() });
+      return { changed: true };
+    },
     async adminGet(b) {
       admin(b); const exams = await J("exams"); await finalizeExpired(exams); await mergeInbox();
       const results = []; for (const k of await keys("res:")) { const r = await J(k); if (r) results.push(r); }
@@ -66,6 +82,14 @@ export function makeApi(store) {
       return {};
     },
     async adminPutPdf(b) { admin(b); if (typeof b.b64 !== "string" || b.b64.length > 5.6e6 || !b.id) throw new Err("PDF too large (max about 4 MB)."); await store.set("pdf:" + b.id, b.b64); return {}; },
+    async adminGetPdf(b) {
+      admin(b);
+      const id = String(b.id || ""), exams = await J("exams", {});
+      if (!id || !Object.values(exams).some(ex => ex.id === id && ex.hasPdf)) throw new Err("Question paper not found.", 404);
+      const b64 = await store.get("pdf:" + id);
+      if (!b64) throw new Err("Question paper is not available in shared storage.", 404);
+      return { b64 };
+    },
     async adminDelResults(b) {
       admin(b); const id = String(b.examId || "");
       if (b.sid) { await store.delete(`res:${id}:${enc(b.sid)}`); return {}; }
@@ -145,5 +169,6 @@ export function makeApi(store) {
 
 export default async (req) => {
   const { getStore } = await import("@netlify/blobs");
-  return makeApi(getStore({ name: "dcc", consistency: "strong" }))(req);
+  const storeName = process.env.CONTEXT === "production" ? "dcc" : "dcc-staging";
+  return makeApi(getStore({ name: storeName, consistency: "strong" }))(req);
 };
