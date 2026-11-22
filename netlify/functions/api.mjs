@@ -10,7 +10,7 @@ async function adminPasswordMatches(store, candidate) {
   if (saved?.salt && saved?.hash) return safeEqual(passwordHash(String(candidate || ""), saved.salt), saved.hash);
   return safeEqual(String(candidate || ""), legacyAdminPassword());
 }
-const secret = () => process.env.APP_SECRET || crypto.createHash("sha256").update("dcc|" + adminPassword()).digest("hex");
+const secret = () => process.env.APP_SECRET || crypto.createHash("sha256").update("dcc|" + legacyAdminPassword()).digest("hex");
 const mac = body => crypto.createHmac("sha256", secret()).update(body).digest("base64url");
 const sign = (p, hours) => { const body = Buffer.from(JSON.stringify({ ...p, exp: Date.now() + hours * 3600e3 })).toString("base64url"); return body + "." + mac(body); };
 const verify = (t, role) => {
