@@ -8,4 +8,4 @@ Before testing the staging preview, configure these Netlify environment variable
 
 After the first successful password change, the new admin password is stored as a salted scrypt hash in the existing Netlify Blobs store. All admin portals use the same password. The recovery key remains an environment-only credential.
 
-The code changes in this branch do not write to or migrate admissions records. The existing `dcc` Blobs store and its admission data are left untouched.
+Deploy previews use a separate `dcc-staging` Netlify Blobs store. Production continues to use the existing `dcc` store. This prevents staging password changes, test uploads, exam attempts, or test records from affecting live admissions and exam data. The staging store starts empty; upload a disposable test question PDF and create test records there. No admission records are copied or migrated.
