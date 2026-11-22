@@ -2,6 +2,13 @@
 
 This upgrade is being developed on the `website-upgrade` branch. The production branch and live website are not changed by this plan.
 
+## Deploy-preview data isolation
+
+- Production functions use the existing site-wide `dcc` Netlify Blobs store so the live admissions, exams, PDFs, sessions and results remain available.
+- Non-production deploy contexts use `getDeployStore("dcc")`, which is isolated to that deploy and cannot read or write the production store.
+- A Deploy Preview therefore starts with an empty, separate data store. Do not copy production admission records into it for testing.
+- This isolation is enforced in the function handler by checking `context.deploy.context === "production"`; if the context is missing or is not production, the handler fails safely into the deploy-specific store.
+
 ## Non-negotiable data protection
 
 - Do not reset, migrate destructively, or replace the existing `admissions`, `enquiries`, `exams`, `res:`, `sess:`, or `pdf:` Netlify Blobs records.
