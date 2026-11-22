@@ -913,7 +913,7 @@
                             <p class="text-[11px] text-slate-300">Simulated SQL Database Store (`admissions` & `enquiries` tables)</p>
                         </div>
                     </div>
-                    <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white">
+                    <div class="flex items-center gap-3"><button onclick="changeAdminPassword()" class="text-xs font-semibold text-white bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-2">Change Password</button><button onclick="closeAdminModal()" class="text-slate-400 hover:text-white">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
@@ -1050,7 +1050,7 @@
         <div id="ex-v-admin" class="exam-view hidden"><div class="max-w-5xl mx-auto p-3 sm:p-6">
             <div class="bg-brand-navy text-white rounded-t-2xl px-5 py-4 flex justify-between items-center">
                 <div><h3 class="font-bold text-base">Exam Admin</h3><p class="text-[11px] text-slate-300">Paper, answer key, timing and results</p></div>
-                <button onclick="examAdminLogout()" class="xbtn bg-slate-700 hover:bg-slate-600 text-white">Logout</button>
+                <div class="flex gap-2"><button onclick="changeAdminPassword()" class="xbtn bg-slate-700 hover:bg-slate-600 text-white">Change Password</button><button onclick="examAdminLogout()" class="xbtn bg-slate-700 hover:bg-slate-600 text-white">Logout</button></div>
             </div>
             <div class="bg-slate-50 border-x border-slate-200 px-3 pt-3 flex items-center gap-2 flex-wrap">
                 <span class="text-xs font-semibold text-slate-600">Question paper:</span>
@@ -1085,7 +1085,7 @@
                     <div class="border border-slate-200 rounded-xl p-4 space-y-2">
                         <h4 class="font-bold text-sm text-slate-900">1. Question paper (PDF)</h4>
                         <input type="file" accept="application/pdf,.pdf" onchange="xaUploadQ(this)" class="text-xs">
-                        <p id="x-qinfo" class="text-[11px] text-slate-500"></p>
+                        <p id="x-qinfo" class="text-[11px] text-slate-500"></p><button id="x-qdownload" onclick="xaDownloadQ()" class="xbtn xbtn-l" type="button">Download Question Paper PDF</button>
                     </div>
                     <div class="border border-slate-200 rounded-xl p-4 space-y-2">
                         <h4 class="font-bold text-sm text-slate-900">2. Answer key (PDF)</h4>
@@ -1619,6 +1619,20 @@
     async function refreshAdminData() {
         try { await pullAdmin(); renderAdminTables(); showToast('Refreshed', 'Latest data loaded from the server.'); } catch (e) { showToast('Refresh failed', e.message, true); }
     }
+    async function changeAdminPassword() {
+        if (!adminToken) return showToast('Please log in', 'Log in to an admin portal first.', true);
+        const currentPassword = prompt('Enter your current admin password or the protected recovery key:');
+        if (currentPassword === null) return;
+        const newPassword = prompt('Enter a new password (at least 10 characters):');
+        if (newPassword === null) return;
+        const confirmPassword = prompt('Confirm the new password:');
+        if (confirmPassword === null) return;
+        if (newPassword !== confirmPassword) return showToast('Passwords do not match', 'No changes were made.', true);
+        try {
+            await api('adminChangePassword', { token: adminToken, currentPassword, newPassword });
+            showToast('Password changed', 'The new password now applies to every admin login.');
+        } catch (e) { showToast('Password not changed', e.message, true); }
+    }
     async function sendForm(kind, record) {   // public admission / enquiry forms go to the shared server
         if (adminToken) return;
         try { await api('form', { kind, record }); } catch (e) { showToast('Could not send', 'Please check your connection or call us directly.', true); }
@@ -1748,6 +1762,7 @@
     }
     function xaRenderFiles() {
         X('x-warn').classList.toggle('hidden', !(xResultsNow().length || Object.values(xSessions).some(s => s.examId === exam.id)));
+        X('x-qdownload').classList.toggle('hidden', !exam.hasPdf);
         X('x-qinfo').innerHTML = exam.hasPdf ? `<span class="text-emerald-700 font-semibold">Uploaded:</span> ${xe(exam.pdfName)} (${exam.pdfPages} pages, ${Math.round(exam.pdfSize / 1024)} KB)` : 'No question paper uploaded yet.';
         X('x-kinfo').innerHTML = exam.keyName ? `Last key file: ${xe(exam.keyName)}` : 'No answer key uploaded yet.';
         X('x-nq').value = exam.key.length || '';
@@ -1755,6 +1770,17 @@
             <select onchange="xaSetKey(${i}, this.value)" class="ml-auto bg-transparent text-xs"><option value="">-</option>${['A','B','C','D'].map(c => `<option ${c === k ? 'selected' : ''}>${c}</option>`).join('')}</select></label>`).join('');
         const why = xReady(exam);
         X('x-keystat').innerHTML = exam.key.length ? (why ? `<span class="text-rose-600">${xe(why)}</span>` : '<span class="text-emerald-700 font-semibold">Paper and key are complete. You can open the exam in Settings.</span>') : '';
+    }
+    async function xaDownloadQ() {
+        if (!adminToken || !exam || !exam.hasPdf) return showToast('No question paper', 'Upload a question paper first.', true);
+        try {
+            const r = await api('adminGetPdf', { token: adminToken, id: exam.id });
+            const raw = atob(r.b64), bytes = new Uint8Array(raw.length);
+            for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+            const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+            const a = document.createElement('a'); a.href = url; a.download = exam.pdfName || (xTag + '_question_paper.pdf');
+            document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (e) { showToast('Download failed', e.message, true); }
     }
     async function xaUploadQ(inp) {
         const f = inp.files[0], ex = exam; inp.value = ''; if (!f) return;
@@ -1866,6 +1892,7 @@
             'The timer starts when you click Start Test and cannot be paused.',
             'The question paper is shown as a PDF. Scroll through it and mark your answers in the Answer Sheet by tapping A, B, C or D next to the question number.',
             'Tap the same option again to clear an answer. Your answers are saved as you go.',
+            'Changing tabs or switching away from the exam is detected and flagged with a warning. Keep the exam tab active. Browser security does not allow a website to block operating-system screenshots completely.',
             'If your browser closes, log in again to resume. The timer keeps running.',
             'The test submits automatically when time is over. You can also click Submit Test when finished; submitted answers cannot be changed.'
         ].map(t => `<li>${t}</li>`).join('');
@@ -1944,6 +1971,20 @@
             showToast('Could not submit', er.message + (auto ? ' Trying again...' : ' Please try again.'), true);
         }
     }
+
+    // Tab switching is detectable; OS-level screenshots cannot be reliably blocked by a website.
+    let xFocusWarnings = 0, xWasHidden = false;
+    document.addEventListener('visibilitychange', () => {
+        if (!xSess || X('ex-v-test').classList.contains('hidden')) return;
+        if (document.hidden) { xWasHidden = true; return; }
+        if (xWasHidden) { xWasHidden = false; xFocusWarnings++; showToast('Exam focus warning', 'Leaving the exam tab was detected (' + xFocusWarnings + ' time' + (xFocusWarnings === 1 ? '' : 's') + '). Stay on this tab until you submit.', true); }
+    });
+    document.addEventListener('contextmenu', e => { if (xSess && !X('ex-v-test').classList.contains('hidden')) e.preventDefault(); });
+    document.addEventListener('copy', e => { if (xSess && !X('ex-v-test').classList.contains('hidden')) e.preventDefault(); });
+    document.addEventListener('keydown', e => {
+        if (!xSess || X('ex-v-test').classList.contains('hidden')) return;
+        if ((e.ctrlKey || e.metaKey) && ['p','c','s'].includes(e.key.toLowerCase())) e.preventDefault();
+    });
 
     // ---------- Reset exam (button in Admin Portal) ----------
     async function openExamReset() {
