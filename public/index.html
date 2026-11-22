@@ -1792,6 +1792,7 @@
             const buf = await f.arrayBuffer(), pdf = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
             await api('adminPutPdf', { token: adminToken, id: ex.id, b64: xB64(buf) });
             Object.assign(ex, { hasPdf: true, pdfName: f.name, pdfPages: pdf.numPages, pdfSize: f.size }); xSave();
+            await api('adminSet', { token: adminToken, sets: { exams } });
             if (exam === ex) xaRenderFiles();
             showToast('Question paper saved', f.name + ' (' + pdf.numPages + ' pages)');
         } catch (e) { showToast('Upload failed', e && /server|log in|large|reach/i.test(e.message || '') ? e.message : 'This PDF could not be read or saved.', true); }
