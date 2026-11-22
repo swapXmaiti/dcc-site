@@ -2,13 +2,13 @@
 // Data lives in Netlify Blobs. The answer key, student passwords and admission details never leave the server.
 import crypto from "node:crypto";
 
-const legacyAdminPassword = () => process.env.ADMIN_PASSWORD || "DM@123";
+const legacyAdminPassword = () => process.env.ADMIN_PASSWORD || "";
 const passwordHash = (password, salt) => crypto.scryptSync(password, salt, 64).toString("hex");
 const safeEqual = (a, b) => { const x = Buffer.from(String(a)), y = Buffer.from(String(b)); return x.length === y.length && crypto.timingSafeEqual(x, y); };
 async function adminPasswordMatches(store, candidate) {
   const saved = await store.get("admin:password", { type: "json" });
   if (saved?.salt && saved?.hash) return safeEqual(passwordHash(String(candidate || ""), saved.salt), saved.hash);
-  return safeEqual(String(candidate || ""), legacyAdminPassword());
+  return !!legacyAdminPassword() && !!candidate && safeEqual(String(candidate), legacyAdminPassword());
 }
 const secret = () => process.env.APP_SECRET || crypto.createHash("sha256").update("dcc|" + legacyAdminPassword()).digest("hex");
 const mac = body => crypto.createHmac("sha256", secret()).update(body).digest("base64url");
@@ -61,7 +61,7 @@ export function makeApi(store) {
   }
 
   const actions = {
-    async adminLogin(b) { if (!(await adminPasswordMatches(store, b.password))) throw new Err("Incorrect password.", 401); return { token: sign({ role: "admin" }, 12) }; },
+    async adminLogin(b) { if (!(await adminPasswordMatches(store, b.password)) && !(process.env.ADMIN_RECOVERY_KEY && safeEqual(String(b.password || ""), process.env.ADMIN_RECOVERY_KEY))) throw new Err("Incorrect password.", 401); return { token: sign({ role: "admin" }, 12) }; },
     async adminChangePassword(b) {
       admin(b);
       if (!(await adminPasswordMatches(store, b.currentPassword)) && !(process.env.ADMIN_RECOVERY_KEY && safeEqual(String(b.currentPassword || ""), process.env.ADMIN_RECOVERY_KEY))) throw new Err("Current password or recovery key is incorrect.", 401);
