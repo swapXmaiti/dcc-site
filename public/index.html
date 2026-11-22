@@ -125,6 +125,9 @@
                     <button onclick="openExamPortal()" class="px-3.5 py-2 text-xs font-bold text-white bg-brand-700 hover:bg-brand-600 rounded-lg flex items-center gap-1.5 transition">
                         <i data-lucide="clipboard-list" class="w-4 h-4"></i> <span class="hidden sm:inline">Exam Portal</span>
                     </button>
+                    <button onclick="openClassPortal()" class="px-3.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg flex items-center gap-1.5 transition">
+                        <i data-lucide="video" class="w-4 h-4"></i> <span class="hidden sm:inline">Class Portal</span>
+                    </button>
                     <button onclick="openAdminModal()" class="px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-lg flex items-center gap-1.5 transition border border-slate-200">
                         <i data-lucide="shield-check" class="w-4 h-4 text-brand-700"></i> <span class="hidden sm:inline">Admin Portal</span>
                     </button>
@@ -1002,6 +1005,79 @@
         </div>
     </div>
 
+
+    <!-- Class Portal: isolated from admission records -->
+    <div id="class-modal" class="fixed inset-0 z-[60] hidden bg-slate-950/70 backdrop-blur-sm overflow-y-auto p-3 sm:p-6">
+      <div class="max-w-5xl mx-auto my-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-brand-navy text-white px-5 py-4 flex items-center justify-between">
+          <div><h2 class="font-bold text-lg">Class Portal</h2><p class="text-xs text-slate-300">Live classes and authorised recordings</p></div>
+          <button onclick="closeClassPortal()" aria-label="Close" class="p-2 text-slate-300 hover:text-white"><i data-lucide="x"></i></button>
+        </header>
+        <div id="cp-login" class="p-6 max-w-md mx-auto space-y-3">
+          <h3 class="font-bold text-slate-900">Student login</h3>
+          <p class="text-xs text-slate-500">Use the Student ID and password already provided by your teacher.</p>
+          <input id="cp-id" class="xin" placeholder="Student ID" autocomplete="username">
+          <input id="cp-password" class="xin" type="password" placeholder="Password" autocomplete="current-password">
+          <button onclick="cpStudentLogin()" class="xbtn xbtn-p w-full">Sign in</button>
+          <p id="cp-error" class="text-xs text-rose-600"></p>
+          <div class="border-t pt-4 mt-4 space-y-2">
+            <h3 class="font-bold text-slate-900">Teacher / admin login</h3>
+            <input id="cp-admin-password" type="password" class="xin" placeholder="Shared admin password" autocomplete="current-password">
+            <button onclick="cpAdminLogin()" class="xbtn xbtn-g w-full">Sign in as teacher</button>
+            <p class="text-xs text-slate-500">Uses the shared admin account. Admin password changes apply to all admin portals.</p>
+          </div>
+          <details class="border-t pt-3 mt-3 space-y-2">
+            <summary class="font-semibold text-xs cursor-pointer">Owner password recovery</summary>
+            <input id="cp-recovery-key" type="password" class="xin" placeholder="Owner recovery key">
+            <input id="cp-recovery-pass" type="password" class="xin" placeholder="New admin password (at least 12 characters)">
+            <button onclick="cpRecoverAdminPassword()" class="xbtn xbtn-r">Recover admin password</button>
+            <p class="text-xs text-slate-500">Available only if the owner configured DCC_MASTER_RECOVERY_KEY privately in Netlify.</p>
+          </details>
+        </div>
+        <div id="cp-student" class="hidden p-5 space-y-4">
+          <div class="flex justify-between items-center"><div><h3 id="cp-welcome" class="font-bold"></h3><p class="text-xs text-slate-500">Your published classes</p></div><button onclick="cpLogout()" class="xbtn xbtn-l">Log out</button></div>
+          <div id="cp-classes" class="grid md:grid-cols-2 gap-3"></div>
+          <h4 class="font-bold text-slate-900">Recordings available to you</h4><div id="cp-recordings" class="text-sm text-slate-600"></div>
+          <p class="text-xs text-slate-500">Recordings appear only after the teacher has connected an eligible Google account, matched a Meet recording and granted you access. Browser controls cannot guarantee prevention of screenshots or screen recording.</p>
+        </div>
+        <div id="cp-admin" class="hidden p-5 space-y-4">
+          <div class="flex items-center justify-between"><h3 class="font-bold">Teacher class management</h3><button onclick="closeClassPortal()" class="xbtn xbtn-l">Close</button></div>
+          <div class="grid md:grid-cols-2 gap-3">
+            <input id="cp-title" class="xin" placeholder="Class title">
+            <input id="cp-batch" class="xin" placeholder="Batch / class (must match admission class)">
+            <input id="cp-start" class="xin" type="datetime-local">
+            <input id="cp-meet" class="xin" type="url" placeholder="Google Meet link (https://meet.google.com/...)">
+          </div>
+          <label class="flex gap-2 items-center text-sm"><input id="cp-publish" type="checkbox"> Publish for matching students</label>
+          <button onclick="cpSaveClass()" class="xbtn xbtn-p">Save class</button>
+          <div id="cp-admin-list" class="space-y-2"></div>
+          <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 space-y-2 text-xs text-amber-900">
+            <b>Google Meet recording connection</b>
+            <p>Connect the teacher's Google account to discover recordings saved by Google Meet. Actual recording still depends on account eligibility and the host starting/allowing recording.</p>
+            <div class="flex flex-wrap gap-2"><button onclick="cpConnectGoogle()" class="xbtn xbtn-p">Connect Google Drive</button><button onclick="cpLoadGoogle()" class="xbtn xbtn-l">Find Meet recordings</button></div>
+            <div id="cp-google-files" class="space-y-2"></div>
+          </div>
+          <div class="border rounded-xl p-3 space-y-2">
+            <b class="text-sm">Attach a recording and grant student access</b>
+            <select id="cp-class-select" class="xin"><option value="">Choose class</option></select>
+            <select id="cp-rec-select" class="xin"><option value="">Choose attached recording</option></select>
+            <button onclick="cpGrantAccess()" class="xbtn xbtn-g">Grant access</button>
+            <button onclick="cpRevokeAccess()" class="xbtn xbtn-r">Revoke access</button>
+            <select id="cp-student-select" class="xin"><option value="">Choose student</option></select>
+            <input id="cp-view-limit" type="number" min="1" max="100" value="2" class="xin" placeholder="Allowed views">
+            <p class="text-xs text-slate-500">Access is checked on the server. Never share Drive files publicly. Each authorised playback session uses one view.</p>
+          </div>
+          <div class="border-t pt-4 space-y-2">
+            <h4 class="font-bold">Change shared admin password</h4>
+            <input id="cp-newpass" type="password" class="xin" placeholder="New password (at least 12 characters)">
+            <button onclick="cpChangeAdminPassword()" class="xbtn xbtn-g">Change admin password</button>
+            <p class="text-xs text-slate-500">All existing admin sessions will be signed out after a successful change.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ================= CBT EXAM PORTAL ================= -->
     <div id="exam-modal" class="fixed inset-0 z-50 hidden bg-slate-100 overflow-y-auto">
 
@@ -1086,6 +1162,7 @@
                         <h4 class="font-bold text-sm text-slate-900">1. Question paper (PDF)</h4>
                         <input type="file" accept="application/pdf,.pdf" onchange="xaUploadQ(this)" class="text-xs">
                         <p id="x-qinfo" class="text-[11px] text-slate-500"></p>
+                        <button id="x-qdownload" onclick="xaDownloadQ()" class="xbtn xbtn-l hidden">Download stored question paper</button>
                     </div>
                     <div class="border border-slate-200 rounded-xl p-4 space-y-2">
                         <h4 class="font-bold text-sm text-slate-900">2. Answer key (PDF)</h4>
@@ -1135,6 +1212,7 @@
                     <button onclick="xsSubmit(false)" class="xbtn xbtn-g">Submit Test</button>
                 </div>
             </header>
+            <div id="exam-integrity-note" class="hidden bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-2 text-xs">Exam integrity notice: keep this tab active and remain in fullscreen. Tab changes and fullscreen exits may be recorded. Screenshots cannot be reliably blocked by a website.</div>
             <div class="flex-1 min-h-0 flex flex-col lg:flex-row">
                 <main id="t-pdf" class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 bg-slate-200"></main>
                 <aside class="lg:w-80 h-[42vh] lg:h-auto bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col shrink-0">
@@ -1584,6 +1662,110 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
+
+    // ---------- Class Portal ----------
+    let cpToken = '', cpIsAdmin = false, cpClassesAdmin = [], cpStudentsAdmin = [], cpGoogleFiles = [];
+    function openClassPortal() {
+      X('class-modal').classList.remove('hidden');
+      X('cp-login').classList.remove('hidden'); X('cp-student').classList.add('hidden'); X('cp-admin').classList.add('hidden');
+      if (adminToken) cpTryAdmin();
+    }
+    function closeClassPortal() { X('class-modal').classList.add('hidden'); }
+    async function cpTryAdmin() {
+      try { const r = await api('classAdminList', { token: adminToken }); cpIsAdmin = true; cpClassesAdmin = r.classes || []; cpStudentsAdmin = r.students || []; X('cp-login').classList.add('hidden'); X('cp-admin').classList.remove('hidden'); cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); }
+      catch (_) { /* Admin can sign in from the existing Admin Portal. */ }
+    }
+    async function cpAdminLogin() {
+      X('cp-error').textContent = '';
+      try {
+        const r = await api('adminLogin', { password: X('cp-admin-password').value });
+        adminToken = r.token; sessionStorage.setItem('dcc_admin_token', adminToken);
+        await cpTryAdmin();
+        if (!cpIsAdmin) throw new Error('Admin sign-in could not be completed.');
+      } catch (e) { X('cp-error').textContent = e.message; }
+    }
+    async function cpStudentLogin() {
+      X('cp-error').textContent = '';
+      try {
+        const r = await api('classStudentLogin', { id: X('cp-id').value, password: X('cp-password').value });
+        cpToken = r.token; X('cp-login').classList.add('hidden'); X('cp-student').classList.remove('hidden');
+        X('cp-welcome').textContent = 'Welcome, ' + r.student.name;
+        await cpLoadStudent();
+      } catch (e) { X('cp-error').textContent = e.message; }
+    }
+    async function cpLoadStudent() {
+      const r = await api('classStudentData', { token: cpToken });
+      X('cp-classes').innerHTML = r.classes.length ? r.classes.map(c => `<article class="border rounded-xl p-4"><h4 class="font-bold">${xe(c.title)}</h4><p class="text-xs text-slate-500">${xe(c.batch)} · ${xe(c.startsAt || 'Time to be announced')}</p><a class="inline-block mt-3 text-sm font-semibold text-teal-700 underline" target="_blank" rel="noopener" href="${xe(c.meetUrl)}">Join Google Meet</a></article>`).join('') : '<p class="text-sm text-slate-500">No published classes for your batch yet.</p>';
+      X('cp-recordings').innerHTML = r.recordings.length ? r.recordings.map(v => `<div class="border rounded-lg p-3 flex items-center justify-between gap-3"><div><b>${xe(v.title)}</b><p class="text-xs text-slate-500">${v.remaining} of ${v.maxViews} views remaining</p></div><button class="xbtn xbtn-g" onclick="cpPlayRecording('${xe(v.recordingId)}')">Watch</button></div>`).join('') : 'No recordings have been authorised for your account yet.';
+    }
+    async function cpLogout() { cpToken = ''; X('cp-password').value = ''; X('cp-student').classList.add('hidden'); X('cp-login').classList.remove('hidden'); }
+    async function cpSaveClass() {
+      try {
+        const r = await api('classAdminSave', { token: adminToken, title: X('cp-title').value, batch: X('cp-batch').value, startsAt: X('cp-start').value, meetUrl: X('cp-meet').value, published: X('cp-publish').checked });
+        cpRenderAdmin(r.classes || []); showToast('Class saved', 'The class is stored separately from admissions.');
+      } catch (e) { showToast('Could not save class', e.message, true); }
+    }
+    function cpRenderAdmin(list) {
+      X('cp-admin-list').innerHTML = list.length ? list.map(c => `<div class="border rounded-lg p-3 flex justify-between gap-3 items-center"><div><b>${xe(c.title)}</b><p class="text-xs text-slate-500">${xe(c.batch)} · ${c.published ? 'Published' : 'Draft'} · ${c.archived ? 'Archived' : 'Active'}</p></div><button class="xbtn xbtn-l" onclick="cpArchiveClass('${xe(c.id)}')">Archive</button></div>`).join('') : '<p class="text-xs text-slate-500">No classes created yet.</p>';
+    }
+    async function cpArchiveClass(id) {
+      try { await api('classAdminArchive', { token: adminToken, id }); const r = await api('classAdminList', { token: adminToken }); cpClassesAdmin = r.classes || []; cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); }
+      catch (e) { showToast('Could not archive class', e.message, true); }
+    }
+
+    function cpRenderGrantControls() {
+      X('cp-class-select').innerHTML = '<option value="">Choose class</option>' + cpClassesAdmin.filter(c => !c.archived).map(c => `<option value="${xe(c.id)}">${xe(c.title)}</option>`).join('');
+      X('cp-student-select').innerHTML = '<option value="">Choose student</option>' + cpStudentsAdmin.map(s => `<option value="${xe(s.id)}">${xe(s.name)} · ${xe(s.id)}</option>`).join('');
+      const recordings = cpClassesAdmin.flatMap(c => (c.recordings || []).map(r => ({ ...r, classId: c.id })));
+      X('cp-rec-select').innerHTML = '<option value="">Choose attached recording</option>' + recordings.map(r => `<option value="${xe(r.id)}">${xe(r.name)} · ${xe(r.classId)}</option>`).join('');
+    }
+    async function cpConnectGoogle() {
+      try { const r = await api('adminGoogleStart', { token: adminToken }); window.location.href = r.url; }
+      catch (e) { showToast('Google connection unavailable', e.message, true); }
+    }
+    async function cpLoadGoogle() {
+      try {
+        const r = await api('classGoogleList', { token: adminToken }); cpGoogleFiles = r.recordings || [];
+        X('cp-google-files').innerHTML = cpGoogleFiles.length ? cpGoogleFiles.map(f => `<div class="bg-white border rounded p-2 flex justify-between items-center gap-2"><span>${xe(f.name)} <small>(${f.createdTime ? new Date(f.createdTime).toLocaleDateString() : 'date unavailable'})</small></span><button class="xbtn xbtn-l" onclick="cpAttachRecording('${xe(f.id)}','${xe(f.name)}')">Attach to selected class</button></div>`).join('') : 'No MP4 recordings found in the connected Drive account.';
+      } catch (e) { showToast('Could not list recordings', e.message, true); }
+    }
+    async function cpAttachRecording(fileId, name) {
+      const classId = X('cp-class-select').value;
+      if (!classId) return showToast('Choose a class first', 'Select the class that this recording belongs to.', true);
+      try { await api('classAdminAttachRecording', { token: adminToken, classId, fileId, name }); const r = await api('classAdminList', { token: adminToken }); cpClassesAdmin = r.classes || []; cpRenderAdmin(cpClassesAdmin); cpRenderGrantControls(); showToast('Recording attached', 'Now grant access to individual students.'); }
+      catch (e) { showToast('Could not attach recording', e.message, true); }
+    }
+    async function cpGrantAccess() {
+      const classId = X('cp-class-select').value, recordingId = X('cp-rec-select').value, studentId = X('cp-student-select').value, maxViews = Number(X('cp-view-limit').value);
+      try { await api('classAdminGrant', { token: adminToken, classId, recordingId, studentId, maxViews }); showToast('Recording access granted', studentId + ' can watch up to ' + maxViews + ' time(s).'); }
+      catch (e) { showToast('Could not grant access', e.message, true); }
+    }
+    async function cpPlayRecording(recordingId) {
+      try {
+        const r = await api('classRecordingPlay', { token: cpToken, recordingId });
+        const holder = X('cp-recordings'), video = document.createElement('video');
+        video.controls = true; video.playsInline = true; video.className = 'w-full rounded-xl mt-3'; video.src = r.url;
+        const prior = holder.querySelector('video'); if (prior) prior.remove();
+        holder.appendChild(video); await video.play().catch(() => {});
+      } catch (e) { showToast('Recording unavailable', e.message, true); }
+    }
+
+    async function cpRevokeAccess() {
+      const recordingId = X('cp-rec-select').value, studentId = X('cp-student-select').value;
+      try { await api('classAdminRevoke', { token: adminToken, recordingId, studentId }); showToast('Access revoked', 'This student can no longer open this recording.'); }
+      catch (e) { showToast('Could not revoke access', e.message, true); }
+    }
+    async function cpRecoverAdminPassword() {
+      const recoveryKey = X('cp-recovery-key').value, newPassword = X('cp-recovery-pass').value;
+      try { await api('adminRecoverPassword', { recoveryKey, newPassword }); adminToken = ''; sessionStorage.removeItem('dcc_admin_token'); closeClassPortal(); showToast('Admin password recovered', 'Log in again using the new password.'); }
+      catch (e) { showToast('Recovery failed', e.message, true); }
+    }
+    async function cpChangeAdminPassword() {
+      const newPassword = X('cp-newpass').value;
+      try { await api('adminChangePassword', { token: adminToken, newPassword }); adminToken = ''; sessionStorage.removeItem('dcc_admin_token'); X('cp-newpass').value = ''; closeClassPortal(); showToast('Password changed', 'Log in again with the new shared admin password.'); }
+      catch (e) { showToast('Password not changed', e.message, true); }
+    }
+
     // ================= CBT EXAM PORTAL =================
     // ---------- Shared server (Netlify Function) ----------
     const API = '/.netlify/functions/api';
@@ -1749,12 +1931,24 @@
     function xaRenderFiles() {
         X('x-warn').classList.toggle('hidden', !(xResultsNow().length || Object.values(xSessions).some(s => s.examId === exam.id)));
         X('x-qinfo').innerHTML = exam.hasPdf ? `<span class="text-emerald-700 font-semibold">Uploaded:</span> ${xe(exam.pdfName)} (${exam.pdfPages} pages, ${Math.round(exam.pdfSize / 1024)} KB)` : 'No question paper uploaded yet.';
+        X('x-qdownload').classList.toggle('hidden', !exam.hasPdf);
         X('x-kinfo').innerHTML = exam.keyName ? `Last key file: ${xe(exam.keyName)}` : 'No answer key uploaded yet.';
         X('x-nq').value = exam.key.length || '';
         X('x-keygrid').innerHTML = exam.key.map((k, i) => `<label class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 border ${k ? 'border-slate-200' : 'border-rose-400 bg-rose-50'} rounded-lg px-2 py-1">Q${i + 1}
             <select onchange="xaSetKey(${i}, this.value)" class="ml-auto bg-transparent text-xs"><option value="">-</option>${['A','B','C','D'].map(c => `<option ${c === k ? 'selected' : ''}>${c}</option>`).join('')}</select></label>`).join('');
         const why = xReady(exam);
         X('x-keystat').innerHTML = exam.key.length ? (why ? `<span class="text-rose-600">${xe(why)}</span>` : '<span class="text-emerald-700 font-semibold">Paper and key are complete. You can open the exam in Settings.</span>') : '';
+    }
+    async function xaDownloadQ() {
+        if (!xAdmin || !adminToken || !exam?.hasPdf) return;
+        try {
+            const r = await api('adminGetPdf', { token: adminToken, id: exam.id });
+            const raw = atob(r.b64), bytes = new Uint8Array(raw.length);
+            for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+            const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+            const a = document.createElement('a'); a.href = url; a.download = r.filename || 'question-paper.pdf'; a.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1500);
+        } catch (e) { showToast('Download failed', e.message, true); }
     }
     async function xaUploadQ(inp) {
         const f = inp.files[0], ex = exam; inp.value = ''; if (!f) return;
@@ -1885,8 +2079,27 @@
     }
 
     // ---------- Student: test ----------
+
+    let examFocusWarnings = 0, examFocusLast = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (xSess && document.hidden) {
+        examFocusWarnings++;
+        if (Date.now() - examFocusLast > 1500) { examFocusLast = Date.now(); api('studentFlag', { token: studentToken, reason: 'tab-hidden' }).catch(() => {}); }
+        showToast('Exam focus warning', 'Switching tabs is discouraged and may be recorded.', true);
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      if (xSess && !document.fullscreenElement) {
+        api('studentFlag', { token: studentToken, reason: 'fullscreen-exit' }).catch(() => {});
+        showToast('Fullscreen exited', 'Please return to fullscreen to continue your exam.', true);
+      }
+    });
+    document.addEventListener('contextmenu', e => { if (xSess) e.preventDefault(); });
+
     function xsRun() {
         X('t-title').textContent = exam.title + ' (' + xTag + ')'; X('t-student').textContent = xStudent.student_name + ' (' + xStudent.exam_id + ')';
+        if (document.fullscreenEnabled && !document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+        X('exam-integrity-note')?.classList.remove('hidden');
         showExamView('test'); xsBuildSheet(); xsTick(); if (!xSess) return;
         clearInterval(xTimer); xTimer = setInterval(xsTick, 1000); xsShowPdf();
     }
