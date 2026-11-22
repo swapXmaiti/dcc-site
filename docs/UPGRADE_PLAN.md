@@ -106,7 +106,7 @@ Still required before this can be considered production-ready:
 Required for backend authentication:
 - `ADMIN_PASSWORD`: strong initial shared admin password (12+ characters).
 - `APP_SECRET`: long random secret used for session signing and encryption.
-- `DCC_MASTER_RECOVERY_KEY`: private owner recovery key. If the owner wants to retain `DM@123`, set this value privately in Netlify; do not commit it.
+- `DCC_MASTER_RECOVERY_KEY`: a newly generated, high-entropy owner recovery key stored only in Netlify. Do not reuse a value that has been shared in chat or commit it to Git.
 
 Required for Google Drive integration:
 - `GOOGLE_CLIENT_ID`
